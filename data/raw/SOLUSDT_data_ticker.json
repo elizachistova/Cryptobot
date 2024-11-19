@@ -1,0 +1,19 @@
+{
+    "data": {
+        "symbol": "SOLUSDT",
+        "priceChange": "3.16000000",
+        "priceChangePercent": "1.315",
+        "weightedAvgPrice": "241.11400760",
+        "openPrice": "240.33000000",
+        "highPrice": "247.50000000",
+        "lowPrice": "234.26000000",
+        "lastPrice": "243.49000000",
+        "volume": "5608281.94700000",
+        "quoteVolume": "1352235335.98270000",
+        "openTime": 1731953580000,
+        "closeTime": 1732039995051,
+        "firstId": 818328828,
+        "lastId": 821441507,
+        "count": 3112680
+    }
+}

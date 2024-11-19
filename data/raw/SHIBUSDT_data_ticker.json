@@ -1,0 +1,19 @@
+{
+    "data": {
+        "symbol": "SHIBUSDT",
+        "priceChange": "0.00000053",
+        "priceChangePercent": "2.130",
+        "weightedAvgPrice": "0.00002509",
+        "openPrice": "0.00002488",
+        "highPrice": "0.00002616",
+        "lowPrice": "0.00002402",
+        "lastPrice": "0.00002541",
+        "volume": "9162852713250.00",
+        "quoteVolume": "229887517.98553686",
+        "openTime": 1731953640000,
+        "closeTime": 1732040042735,
+        "firstId": 957519721,
+        "lastId": 964442291,
+        "count": 6922571
+    }
+}

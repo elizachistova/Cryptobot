@@ -1,0 +1,19 @@
+{
+    "data": {
+        "symbol": "TONUSDT",
+        "priceChange": "-0.03500000",
+        "priceChangePercent": "-0.630",
+        "weightedAvgPrice": "5.57047428",
+        "openPrice": "5.55200000",
+        "highPrice": "5.67900000",
+        "lowPrice": "5.44500000",
+        "lastPrice": "5.51700000",
+        "volume": "7050616.26000000",
+        "quoteVolume": "39275276.51434000",
+        "openTime": 1731953640000,
+        "closeTime": 1732040046913,
+        "firstId": 35667817,
+        "lastId": 35869924,
+        "count": 202108
+    }
+}

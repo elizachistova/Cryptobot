@@ -1,0 +1,20 @@
+{
+    "api_endpoints": {
+        "binance_klines": "https://api1.binance.com/api/v3/klines",
+        "binance_ticker": "https://api1.binance.com/api/v3/ticker",
+        "binance_trades": "https://api.binance.com/api/v3/aggTrades"
+    },
+    "symbols": ["BTCUSDT", "ETHUSDT", "SOLUSDT", "BNBUSDT", "XRPUSDT",
+                "DOGEUSDT", "ADAUSDT", "TRXUSDT", "SHIBUSDT","TONUSDT"],
+    "interval": "1d",
+    "columns_klines": [
+        "open_time", "open", "high", "low", "close", "volume", 
+        "close_time", "base_asset_volume", "number_of_trades", "taker_buy_volume", 
+        "taker_buy_base_asset_volume"
+    ],
+    "columns_trades": [
+        "agg_trade_id", "price", "quantity", "first_trade_id", "last_trade_id", "timestamp", 
+        "isBuyerMaker", "isBestMatch"
+    ],
+    "limit": 1000
+}

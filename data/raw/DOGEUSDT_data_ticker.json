@@ -1,0 +1,19 @@
+{
+    "data": {
+        "symbol": "DOGEUSDT",
+        "priceChange": "0.03120000",
+        "priceChangePercent": "8.363",
+        "weightedAvgPrice": "0.38592629",
+        "openPrice": "0.37306000",
+        "highPrice": "0.40600000",
+        "lowPrice": "0.36240000",
+        "lastPrice": "0.40426000",
+        "volume": "5103166040.00000000",
+        "quoteVolume": "1969445936.85304000",
+        "openTime": 1731953580000,
+        "closeTime": 1732040018295,
+        "firstId": 755316531,
+        "lastId": 759228138,
+        "count": 3911608
+    }
+}

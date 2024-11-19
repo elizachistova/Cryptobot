@@ -1,0 +1,19 @@
+{
+    "data": {
+        "symbol": "XRPUSDT",
+        "priceChange": "-0.02100000",
+        "priceChangePercent": "-1.866",
+        "weightedAvgPrice": "1.10494455",
+        "openPrice": "1.12520000",
+        "highPrice": "1.14800000",
+        "lowPrice": "1.06880000",
+        "lastPrice": "1.10420000",
+        "volume": "585442716.00000000",
+        "quoteVolume": "646881741.02350000",
+        "openTime": 1731953580000,
+        "closeTime": 1732040011479,
+        "firstId": 719882777,
+        "lastId": 721950821,
+        "count": 2068045
+    }
+}

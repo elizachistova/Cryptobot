@@ -1,0 +1,19 @@
+{
+    "data": {
+        "symbol": "ADAUSDT",
+        "priceChange": "-0.01630000",
+        "priceChangePercent": "-2.167",
+        "weightedAvgPrice": "0.74041676",
+        "openPrice": "0.75230000",
+        "highPrice": "0.76500000",
+        "lowPrice": "0.72250000",
+        "lastPrice": "0.73600000",
+        "volume": "268859723.50000000",
+        "quoteVolume": "199068246.41825000",
+        "openTime": 1731953580000,
+        "closeTime": 1732040026495,
+        "firstId": 525463002,
+        "lastId": 526080752,
+        "count": 617751
+    }
+}
