@@ -34,7 +34,7 @@ def create_collection(db, collection_name, validator=None):
         print(f"collection {collection_name} already exist")
 
 
-def insert_data_to_mongo(db, collection_name, df):
+def insert_data_to_mongo(db, collection_name, data):
     """
     Inserts data into MongoDB collection.
 
@@ -48,7 +48,6 @@ def insert_data_to_mongo(db, collection_name, df):
             Each row will be converted to document
     
     Algorithms:
-        - Converts each row of the dataFrame into a list of dictionary records.
         - Attemps inserts records into specified MongoDB collections.
         - Handles errors of insertion
     """
@@ -56,7 +55,7 @@ def insert_data_to_mongo(db, collection_name, df):
     collection = db[collection_name]
     # records = df.to_dict(orient="records")
     try:
-        collection.insert_many(df)
+        collection.insert_many(data)
         print(f"Data inserted successfully into {collection_name}.")
     except Exception as e:
         print(f"Error data insertion into {collection_name} : {e}")
