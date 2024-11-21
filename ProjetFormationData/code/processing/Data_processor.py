@@ -14,9 +14,10 @@ class DataLoader:
         self.dataframes = {}
 
     def load_klines_data(self) -> Dict[str, pd.DataFrame]:
+       # print(f"Data directory: {self.data_dir}")
         if not os.path.exists(self.data_dir):
             raise FileNotFoundError(f"Directory {self.data_dir} does not exist")
-        
+           
         for filename in os.listdir(self.data_dir):
             if filename.endswith(".json") and "data_klines" in filename:
                 pair = filename.replace('_data_klines.json', '')
@@ -150,8 +151,8 @@ class DataSaver:
         print(f"Saved processed data to {output_file}")
 
 def main():
-    data_dir = '/app/code/data/data_raw/'
-    output_dir = '/app/code/data/data_processed/'
+    data_dir = os.path.join(os.path.dirname(__file__), '../data/data_raw')
+    output_dir = os.path.join(os.path.dirname(__file__), '../data/data_processed')
     
     loader = DataLoader(data_dir)
     dataframes = loader.load_klines_data()
