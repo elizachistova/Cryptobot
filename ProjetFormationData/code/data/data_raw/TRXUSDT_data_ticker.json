@@ -1,0 +1,25 @@
+{
+    "data": {
+        "symbol": "TRXUSDT",
+        "priceChange": "0.00090000",
+        "priceChangePercent": "0.453",
+        "weightedAvgPrice": "0.19902701",
+        "prevClosePrice": "0.19860000",
+        "lastPrice": "0.19960000",
+        "lastQty": "7963.90000000",
+        "bidPrice": "0.19960000",
+        "bidQty": "198525.50000000",
+        "askPrice": "0.19970000",
+        "askQty": "1477.30000000",
+        "openPrice": "0.19870000",
+        "highPrice": "0.20100000",
+        "lowPrice": "0.19690000",
+        "volume": "2478455.70000000",
+        "quoteVolume": "493279.63700000",
+        "openTime": 1732206265731,
+        "closeTime": 1732292665731,
+        "firstId": 29457,
+        "lastId": 30999,
+        "count": 1543
+    }
+}

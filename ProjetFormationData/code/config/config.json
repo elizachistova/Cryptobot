@@ -1,8 +1,17 @@
 {
     "symbols": [
         "BTCUSDT",
-        "ETHUSDT"
+        "ETHUSDT",
+        "SOLUSDT", 
+        "BNBUSDT", 
+        "XRPUSDT",
+        "DOGEUSDT", 
+        "ADAUSDT", 
+        "TRXUSDT", 
+        "SHIBUSDT", 
+        "TONUSDT"
     ],
+
     "interval": "4h",
     "limit": 1000,
     "columns_klines": [

@@ -1,0 +1,25 @@
+{
+    "data": {
+        "symbol": "ADAUSDT",
+        "priceChange": "0.15980000",
+        "priceChangePercent": "20.354",
+        "weightedAvgPrice": "0.85411603",
+        "prevClosePrice": "0.78520000",
+        "lastPrice": "0.94490000",
+        "lastQty": "7246.40000000",
+        "bidPrice": "0.94490000",
+        "bidQty": "23791.30000000",
+        "askPrice": "0.94510000",
+        "askQty": "275.20000000",
+        "openPrice": "0.78510000",
+        "highPrice": "1.21500000",
+        "lowPrice": "0.70800000",
+        "volume": "15666265.80000000",
+        "quoteVolume": "13380808.79736000",
+        "openTime": 1732206283966,
+        "closeTime": 1732292683966,
+        "firstId": 584335,
+        "lastId": 625770,
+        "count": 41436
+    }
+}

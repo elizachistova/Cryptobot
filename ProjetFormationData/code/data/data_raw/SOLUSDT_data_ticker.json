@@ -1,0 +1,25 @@
+{
+    "data": {
+        "symbol": "SOLUSDT",
+        "priceChange": "5.06000000",
+        "priceChangePercent": "2.024",
+        "weightedAvgPrice": "256.95204536",
+        "prevClosePrice": "250.06000000",
+        "lastPrice": "255.00000000",
+        "lastQty": "0.76700000",
+        "bidPrice": "255.06000000",
+        "bidQty": "1.51000000",
+        "askPrice": "255.09000000",
+        "askQty": "620.69000000",
+        "openPrice": "249.94000000",
+        "highPrice": "281.01000000",
+        "lowPrice": "91.31000000",
+        "volume": "56239.13000000",
+        "quoteVolume": "14450759.48269000",
+        "openTime": 1732206277588,
+        "closeTime": 1732292677588,
+        "firstId": 881110,
+        "lastId": 935582,
+        "count": 54473
+    }
+}
