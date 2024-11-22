@@ -1,7 +1,7 @@
 {
     "symbols": [
-        "BTCUSDT",
-        "ETHUSDT",
+        "BTCUSDT", 
+        "ETHUSDT", 
         "SOLUSDT", 
         "BNBUSDT", 
         "XRPUSDT",
@@ -38,7 +38,7 @@
         "isBestMatch"
     ],
     "api_endpoints": {
-        "binance_klines": "https://testnet.binance.vision/api/v3/klines",
+        "binance_klines": "https://api1.binance.com/api/v3/klines",
         "binance_ticker": "https://testnet.binance.vision/api/v3/ticker/24hr",
         "binance_trades": "https://testnet.binance.vision/api/v3/trades"
     }

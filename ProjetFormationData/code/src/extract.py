@@ -17,7 +17,7 @@ def create_config():
     # Configuration par défaut
     default_config = {
         "symbols": ["BTCUSDT", "ETHUSDT"],
-        "interval": "1h",
+        "interval": "4h",
         "limit": 1000,
         "columns_klines": [
             "openTime",
@@ -49,9 +49,9 @@ def create_config():
         }
     }
 
-    # Création des dossiers nécessaires
-   # os.makedirs('/app/code/config', exist_ok=True)
-    # os.makedirs('app/code/data_raw', exist_ok=True)
+  # Création des dossiers nécessaires
+  # os.makedirs('/app/code/config', exist_ok=True)
+  # os.makedirs('app/code/data_raw', exist_ok=True)
 
    # config_path = os.path.join(CONFIG_DIR)
     
@@ -64,6 +64,7 @@ def create_config():
     # return default_config
 
 def load_config(CONFIG_DIR=os.path.join(os.path.dirname(__file__), '../config/config.json')):
+    
     """
     Loads the configuration json file.
     
@@ -81,33 +82,45 @@ def load_config(CONFIG_DIR=os.path.join(os.path.dirname(__file__), '../config/co
     except FileNotFoundError:
         print("Configuration file not found. Creating default configuration...")
         return create_config()
-
+  
 def fetch_data_klines(endpoint, symbol, interval, columns, limit, start_date=None, end_date=None):
-    data_klines=[]
-    params = {'symbol': symbol, 
-                'interval': interval, 
-                'limit': limit,
-                'startTime': 0}
-      
+    data_klines = []
+
+    if end_date is None:
+        end_date = datetime.now()
+    if start_date is None:
+        print("Fetching from the earliest available data.")
+
+    end_timestamp = int(end_date.timestamp() * 1000)
+    start_timestamp = int(start_date.timestamp() * 1000) if start_date else 0
+
+    params = {'symbol': symbol, 'interval': interval, 'limit': limit, 'startTime': start_timestamp, 'endTime': end_timestamp}
+
     while True:
         response = requests.get(endpoint, params=params)
+        
         if response.status_code != 200:
-                raise Exception(f"Error: {response.status_code},{response.text}")
-
+            raise Exception(f"Error: {response.status_code},{response.text}")
+        
         klines = response.json()
+        
         if not klines:
-                break
+            print("No more data returned, breaking the loop.")
+            break
         
         for kline in klines:
             kline_dict = dict(zip(columns, kline))
             data_klines.append(kline_dict)
         
-        # Looping the startTime due to the limit=1000
-        params['startTime'] = klines[-1][0] + 1  #Adding 1 ms
+        params['startTime'] = klines[-1][0] + 1
 
-    print(f"Fetched {len(klines)} rows for {symbol}, total rows for now: {len(data_klines)}")
+        print(f"Fetched {len(data_klines)} rows for {symbol} from {start_date if start_date else 'earliest available'} to {end_date.strftime('%Y-%m-%d')}")
+        if klines[-1][0] >= end_timestamp:
+            print("Reached end date, breaking the loop.")
+            break
+        time.sleep(0.1)
+
     data_klines.sort(key=lambda x: x['openTime'], reverse=True)
-    time.sleep(0.1)
     
     return data_klines
 
@@ -212,11 +225,11 @@ def main():
             data_klines = fetch_data_klines(endpoint_klines, symbol, interval, columns_klines, limit)
             load_data(symbol, data_klines, "klines", columns_klines)
             
-            data_trades = fetch_data_trades(endpoint_trades, symbol, columns_trades, limit)
-            load_data(symbol, data_trades, "trades", columns_trades)
+            #data_trades = fetch_data_trades(endpoint_trades, symbol, columns_trades, limit)
+            #load_data(symbol, data_trades, "trades", columns_trades)
 
-            data_ticker = fetch_data_ticker(endpoint_ticker, symbol)
-            load_data(symbol, data_ticker, "ticker")
+            #data_ticker = fetch_data_ticker(endpoint_ticker, symbol)
+            #load_data(symbol, data_ticker, "ticker")
     
     except Exception as e:
         print("Error occuring:", e) 
