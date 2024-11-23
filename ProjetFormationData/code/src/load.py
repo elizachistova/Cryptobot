@@ -34,7 +34,7 @@ def create_collection(db, collection_name, validator=None):
         print(f"collection {collection_name} already exist")
 
 
-def insert_data_to_mongo(db, collection_name, data):
+def insert_data_to_mongo(db, collection_name,data):
     """
     Inserts data into MongoDB collection.
 
@@ -53,10 +53,13 @@ def insert_data_to_mongo(db, collection_name, data):
     """
 
     collection = db[collection_name]
-    # records = df.to_dict(orient="records")
+    #records = symbol.to_dict(orient="records")
     try:
-        collection.insert_many(data)
-        print(f"Data inserted successfully into {collection_name}.")
+        if isinstance(data, list) and all(isinstance(doc, dict) for doc in data):
+            collection.insert_many(data)
+            print(f"Data inserted successfully into {collection_name}.")
+        else:
+            print(f"Data insertion failed into {collection_name}.")
     except Exception as e:
         print(f"Error data insertion into {collection_name} : {e}")
 
@@ -69,7 +72,11 @@ def load_processed_data(processed_dir):
             filepath = os.path.join(processed_dir, filename)
             with open(filepath, 'r') as f:
                 data = json.load(f)
-                all_data[symbol] = data['data']
+                meta_data = data.get('metadata',{})
+                data_market = data.get('data',[])
+                for recods in data_market:
+                    recods.update(meta_data)
+                all_data[symbol] = data_market
     return all_data
 
 
@@ -86,18 +93,21 @@ def main():
     data_dir =os.path.join(os.path.dirname(__file__), '../data/data_processed')
    
     processed_data  = load_processed_data(data_dir)
-    create_collection(db, "Gary") # Create collection named "market_data"
+    create_collection(db, "market_data") # Create collection named "market_data"
 
     for symbol,df in processed_data.items():
+        # insert_data_to_mongo(db,"market_data",symbol)
         print(f"Inserting data for symbol: {symbol}")
-        insert_data_to_mongo(db,"Gary",df) # insert collection in database
+        insert_data_to_mongo(db,"market_data",df) # insert collection in database
 
-    # Verifying Data
-    col = db["Gary"]
+
+    # Verifying 
+    col = db["market_data"]
     datas = col.find().limit(5)
     print("\nSample data from MongoDB:")
     for data in datas:
         pprint(data)
+    
 
 if __name__ == "__main__":
     main()
