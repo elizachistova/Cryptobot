@@ -34,7 +34,7 @@ def create_collection(db, collection_name, validator=None):
         print(f"collection {collection_name} already exist")
 
 
-def insert_data_to_mongo(db, collection_name,data):
+def insert_data_to_mongo(db, collection_name, data):
     """
     Inserts data into MongoDB collection.
 
@@ -53,7 +53,6 @@ def insert_data_to_mongo(db, collection_name,data):
     """
 
     collection = db[collection_name]
-    #records = symbol.to_dict(orient="records")
     try:
         if isinstance(data, list) and all(isinstance(doc, dict) for doc in data):
             collection.insert_many(data)
