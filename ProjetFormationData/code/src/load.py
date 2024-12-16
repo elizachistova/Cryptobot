@@ -1,8 +1,8 @@
 import json
 from pymongo import MongoClient
-from pprint import pprint
-from Data_processor import DataLoader, DataProcessor
-from Data_processor import main as process_data 
+from pprint import pprint 
+from dotenv import load_dotenv
+from datetime import datetime
 import os
 
 
@@ -71,42 +71,85 @@ def load_processed_data(processed_dir):
             filepath = os.path.join(processed_dir, filename)
             with open(filepath, 'r') as f:
                 data = json.load(f)
-                meta_data = data.get('metadata',{})
-                data_market = data.get('data',[])
-                for recods in data_market:
-                    recods.update(meta_data)
-                all_data[symbol] = data_market
+                meta_data = data.get("metadata", {})
+                data_market = data.get("data", [])
+                
+                transformed_data = []
+                for record in data_market:
+                    # Regrouper les indicateurs dans un champ "indicator"
+                    indicator = {
+                        "BB_UPPER": record.pop("BB_UPPER"),
+                        "BB_LOWER": record.pop("BB_LOWER"),
+                        "RSI": record.pop("RSI"),
+                        "DOJI": record.pop("DOJI"),
+                        "HAMMER": record.pop("HAMMER"),
+                        "SHOOTING_STAR": record.pop("SHOOTING_STAR"),
+                    }
+                    
+                    # Ajouter les métadonnées
+                    record.update(meta_data)
+                    
+                    # Créer le format final avec un champ "indicator"
+                    transformed_data.append({
+                        "symbol": record["symbol"],
+                        "last_updated": datetime.strptime(record["last_updated"], "%Y-%m-%d %H:%M:%S"),
+                        "rows": record["rows"],
+                        "openTime": datetime.strptime(record["openTime"], "%Y-%m-%d %H:%M:%S"),
+                        "open": record["open"],
+                        "high": record["high"],
+                        "low": record["low"],
+                        "close": record["close"],
+                        "volume": record["volume"],
+                        "trend": record["trend"],
+                        "volume_price_ratio": record["volume_price_ratio"],
+                        "indicator": indicator
+                    })
+                
+                all_data[symbol] = transformed_data
     return all_data
 
 
 def main():
-    # Connection setup
-    client = MongoClient(
-    host = "127.0.0.1",
-    port= 27017,
-    username="CryptoBot",
-    password="bot123"
-    )
 
-    db = client.Cryptobot # Select database
-    data_dir =os.path.join(os.path.dirname(__file__), '../data/data_processed')
-   
-    processed_data  = load_processed_data(data_dir)
-    create_collection(db, "market_data") # Create collection named "market_data"
-
-    for symbol,df in processed_data.items():
-        # insert_data_to_mongo(db,"market_data",symbol)
-        print(f"Inserting data for symbol: {symbol}")
-        insert_data_to_mongo(db,"market_data",df) # insert collection in database
-
-
-    # Verifying 
-    col = db["market_data"]
-    datas = col.find().limit(5)
-    print("\nSample data from MongoDB:")
-    for data in datas:
-        pprint(data)
+    # Load .env file from a custom path
+    dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
+    load_dotenv(dotenv_path)
     
+    host = os.getenv("HOST", "localhost").strip(",")  # Remove any trailing commas
+    port = os.getenv("PORT", "27017").strip(",")  # Remove any trailing commas
+    username = os.getenv("USERNAME", "").strip()
+    password = os.getenv("PASSWORD", "").strip()
+
+    try:
+
+        # Connection setup
+        client = MongoClient(
+        host=host,
+        port=int(port),
+        username=username,
+        password=password,
+        #authSource="Cryptobot"
+       )
+
+        db = client.Cryptobot # Select database
+        data_dir =os.path.join(os.path.dirname(__file__), '../data/data_processed')
+   
+        processed_data  = load_processed_data(data_dir)
+        create_collection(db, "market_data") # Create collection named "market_data"
+
+        for symbol,df in processed_data.items():
+            print(f"Inserting data for symbol: {symbol}")
+            insert_data_to_mongo(db,"market_data",df) # insert collection in database
+
+
+        # Verifying 
+        col = db["market_data"]
+        datas = col.find().limit(5)
+        print("\nSample data from MongoDB:")
+        for data in datas:
+            pprint(data)
+    except Exception as e:
+        print(f"Error connecting to MongoDB for insertion: {e}")
 
 if __name__ == "__main__":
     main()
