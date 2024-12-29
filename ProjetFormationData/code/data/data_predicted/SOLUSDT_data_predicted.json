@@ -1,0 +1,47 @@
+{
+    "metadata": {
+        "symbol": "SOLUSDT"
+    },
+    "data": [
+        {
+            "timestamp": "2024-11-19 16:00:00",
+            "prediction": 239.96
+        },
+        {
+            "timestamp": "2024-11-19 20:00:00",
+            "prediction": 238.74
+        },
+        {
+            "timestamp": "2024-11-20 00:00:00",
+            "prediction": 244.24
+        },
+        {
+            "timestamp": "2024-11-20 04:00:00",
+            "prediction": 243.58
+        },
+        {
+            "timestamp": "2024-11-20 08:00:00",
+            "prediction": 237.6
+        },
+        {
+            "timestamp": "2024-11-20 12:00:00",
+            "prediction": 238.34
+        },
+        {
+            "timestamp": "2024-11-20 16:00:00",
+            "prediction": 240.61
+        },
+        {
+            "timestamp": "2024-11-20 20:00:00",
+            "prediction": 241.69
+        },
+        {
+            "timestamp": "2024-11-21 00:00:00",
+            "prediction": 244.31
+        },
+        {
+            "timestamp": "2024-11-21 04:00:00",
+            "prediction": 240.23
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+    "metadata": {
+        "symbol": "TONUSDT"
+    },
+    "data": [
+        {
+            "timestamp": "2024-11-19 16:00:00",
+            "prediction": 5.64
+        },
+        {
+            "timestamp": "2024-11-19 20:00:00",
+            "prediction": 5.76
+        },
+        {
+            "timestamp": "2024-11-20 00:00:00",
+            "prediction": 5.38
+        },
+        {
+            "timestamp": "2024-11-20 04:00:00",
+            "prediction": 5.71
+        },
+        {
+            "timestamp": "2024-11-20 08:00:00",
+            "prediction": 5.41
+        },
+        {
+            "timestamp": "2024-11-20 12:00:00",
+            "prediction": 5.81
+        },
+        {
+            "timestamp": "2024-11-20 16:00:00",
+            "prediction": 5.89
+        },
+        {
+            "timestamp": "2024-11-20 20:00:00",
+            "prediction": 5.52
+        },
+        {
+            "timestamp": "2024-11-21 00:00:00",
+            "prediction": 5.88
+        },
+        {
+            "timestamp": "2024-11-21 04:00:00",
+            "prediction": 5.48
+        }
+    ]
+}

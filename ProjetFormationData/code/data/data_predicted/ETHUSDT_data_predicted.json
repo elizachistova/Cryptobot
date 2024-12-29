@@ -1,0 +1,47 @@
+{
+    "metadata": {
+        "symbol": "ETHUSDT"
+    },
+    "data": [
+        {
+            "timestamp": "2024-11-19 16:00:00",
+            "prediction": 3155.8
+        },
+        {
+            "timestamp": "2024-11-19 20:00:00",
+            "prediction": 3188.38
+        },
+        {
+            "timestamp": "2024-11-20 00:00:00",
+            "prediction": 3158.42
+        },
+        {
+            "timestamp": "2024-11-20 04:00:00",
+            "prediction": 3155.62
+        },
+        {
+            "timestamp": "2024-11-20 08:00:00",
+            "prediction": 3191.31
+        },
+        {
+            "timestamp": "2024-11-20 12:00:00",
+            "prediction": 3222.9
+        },
+        {
+            "timestamp": "2024-11-20 16:00:00",
+            "prediction": 3236.8
+        },
+        {
+            "timestamp": "2024-11-20 20:00:00",
+            "prediction": 3179.03
+        },
+        {
+            "timestamp": "2024-11-21 00:00:00",
+            "prediction": 3188.35
+        },
+        {
+            "timestamp": "2024-11-21 04:00:00",
+            "prediction": 3162.68
+        }
+    ]
+}
