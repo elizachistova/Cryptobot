@@ -6,11 +6,110 @@ import json
 import os
 from typing import Dict, List, Tuple, Any
 import logging
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+import joblib
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO,
                    format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+
+class ModelPredictor:
+    def __init__(self, model_dir: str = '/app/ProjetFormationData/code/models'):
+        self.model_dir = model_dir
+        self.models = {}
+        self.scalers = {}
+        self.scalers_y = {}
+        
+    def fix_input_layer(self, model_path):
+        """Correction pour charger les anciens modèles avec la nouvelle version de TF"""
+        import tensorflow as tf
+        import json
+        import h5py
+        
+        with h5py.File(model_path, 'r') as f:
+            model_config = json.loads(f.attrs['model_config'].decode('utf-8'))
+            
+        # Modifier la configuration de l'InputLayer
+        layers = model_config['config']['layers']
+        if layers and layers[0]['class_name'] == 'InputLayer':
+            if 'batch_shape' in layers[0]['config']:
+                batch_shape = layers[0]['config']['batch_shape']
+                layers[0]['config']['input_shape'] = batch_shape[1:]
+                del layers[0]['config']['batch_shape']
+                
+        return tf.keras.models.model_from_config(model_config)
+        
+    def load_model_and_scalers(self, symbol: str):
+        if symbol not in self.models:
+            try:
+                model_path = f"{self.model_dir}/{symbol}_best_model.keras"
+                scaler_path = f"{self.model_dir}/{symbol}_scaler.pkl"
+                scaler_y_path = f"{self.model_dir}/{symbol}_scaler_y.pkl"
+
+                # Charger le modèle avec la correction
+                fixed_model = self.fix_input_layer(model_path)
+                fixed_model.compile(optimizer='adam', loss='mean_squared_error')
+                fixed_model.load_weights(model_path)
+                self.models[symbol] = fixed_model
+
+                self.scalers[symbol] = joblib.load(scaler_path)
+                self.scalers_y[symbol] = joblib.load(scaler_y_path)
+                
+                logger.info(f"Modèle et scalers chargés avec succès pour {symbol}")
+                return True
+
+            except Exception as e:
+                logger.error(f"Erreur lors du chargement du modèle pour {symbol}: {str(e)}")
+                return False
+        return True
+
+    def predict(self, symbol: str, df: pd.DataFrame) -> pd.Series:
+        logger.info(f"Début de la prédiction pour {symbol}")
+        
+        if not self.load_model_and_scalers(symbol):
+            logger.error(f"Impossible de charger le modèle pour {symbol}")
+            return None
+
+        try:
+            features = ["open", "high", "low", "volume", "trend", "volume_price_ratio", 
+                       "BB_MA", "BB_UPPER", "BB_LOWER", "RSI"]
+            
+            # Vérification des colonnes
+            missing_features = [f for f in features if f not in df.columns]
+            if missing_features:
+                logger.error(f"Colonnes manquantes pour {symbol}: {missing_features}")
+                return None
+                
+            # Log des dimensions des données
+            logger.info(f"Shape des données d'entrée: {df[features].shape}")
+            
+            input_data = df[features].values[-10:]  # Utilise les 10 dernières valeurs
+            logger.info(f"Shape après slice: {input_data.shape}")
+            
+            # Scale the input data
+            scaled_data = self.scalers[symbol].transform(input_data)
+            logger.info(f"Shape après scaling: {scaled_data.shape}")
+            
+            scaled_data = np.reshape(scaled_data, (1, scaled_data.shape[0], scaled_data.shape[1]))
+            logger.info(f"Shape final avant prédiction: {scaled_data.shape}")
+            
+            # Make prediction
+            prediction = self.models[symbol].predict(scaled_data, verbose=0)
+            logger.info(f"Prédiction brute: {prediction}")
+            
+            # Inverse transform the prediction
+            predicted_price = self.scalers_y[symbol].inverse_transform(prediction)[0][0]
+            logger.info(f"Prix prédit final: {predicted_price}")
+            
+            return predicted_price
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de la prédiction pour {symbol}: {str(e)}")
+            logger.error(f"Traceback: ", exc_info=True)
+            return None
 
 class CryptoAnalyzer:
     def __init__(self, data_dir: str = '/app/ProjetFormationData/code/data/data_processed'):
@@ -216,7 +315,6 @@ class CryptoAnalyzer:
         return fig
 
  
-
     def analyze_symbol(self, symbol: str) -> Dict[str, Any]:
         """
         Effectue une analyse complète pour un symbole donné.
@@ -225,7 +323,7 @@ class CryptoAnalyzer:
             symbol: Symbole de la cryptomonnaie
             
         Returns:
-            Dictionnaire contenant toutes les analyses
+            Dictionnaire contenant toutes les analyses et prédictions
         """
         if symbol not in self.available_symbols:
             logger.error(f"Symbole {symbol} non disponible")
@@ -236,13 +334,21 @@ class CryptoAnalyzer:
             if df.empty:
                 return {}
 
+            # Get prediction
+            predictor = ModelPredictor()
+            predicted_price = predictor.predict(symbol, df)
+
             results = {
                 'symbol': symbol,
                 'price_volume_chart': self.plot_price_volume(df, symbol),
                 'technical_chart': self.plot_technical_indicators(df, symbol),
+                'prediction': {
+                    'predicted_price': predicted_price,
+                    'last_price': df['close'].iloc[-1],
+                    'prediction_diff': predicted_price - df['close'].iloc[-1] if predicted_price is not None else None
+                }
             }
             
-
             return results
 
         except Exception as e:

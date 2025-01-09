@@ -72,6 +72,39 @@
     font-weight: bold;
 }
 
+/* Styles pour les prédictions */
+.prediction-box {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.prediction-box h6 {
+    margin-bottom: 10px;
+    color: #495057;
+    font-weight: bold;
+}
+
+.prediction-box p {
+    font-size: 1.4em;
+    margin: 0;
+    font-weight: bold;
+}
+
+.positive-diff {
+    color: #28a745;
+}
+
+.negative-diff {
+    color: #dc3545;
+}
 /* Style responsive */
 @media (max-width: 768px) {
     .chart-container {

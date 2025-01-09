@@ -1,3 +1,21 @@
+// Fonction pour mettre à jour les prédictions
+function updatePredictions(prediction) {
+    if (prediction) {
+        const currentPrice = prediction.last_price.toFixed(2);
+        const predictedPrice = prediction.predicted_price.toFixed(2);
+        const diff = prediction.prediction_diff;
+        const diffPercentage = ((diff / prediction.last_price) * 100).toFixed(2);
+        
+        $('#current-price').text(`$${currentPrice}`);
+        $('#predicted-price').text(`$${predictedPrice}`);
+        
+        const diffElement = $('#price-diff');
+        diffElement.text(`${diffPercentage}%`);
+        diffElement.removeClass('positive-diff negative-diff');
+        diffElement.addClass(diff >= 0 ? 'positive-diff' : 'negative-diff');
+    }
+}
+
 // Fonction pour gérer le chargement des graphiques
 function loadCharts(symbol) {
     if (!symbol) return;
@@ -34,6 +52,11 @@ function loadCharts(symbol) {
 
             Plotly.newPlot('price-volume-chart', priceVolumeData.data, priceVolumeData.layout, config);
             Plotly.newPlot('technical-chart', technicalData.data, technicalData.layout, config);
+
+            // Mise à jour des prédictions
+            if (data.prediction) {
+                updatePredictions(data.prediction);
+            }
 
             hideLoading();
         })
