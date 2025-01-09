@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: CryptoBot
+      MONGO_INITDB_ROOT_PASSWORD: bot123
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  jupyter:
+    build: .
+    container_name: jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app
+    command: ["python", "-m", "jupyterlab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+
+  cryptobot:
+    build: .
+    container_name: cryptobot_dashboard
+    ports:
+      - "5000:5000"
+    volumes:
+      - C:\Users\gary_\Desktop\Git Cryptobot-beta\Cryptobot\ProjetFormationData\code\dashboard:/app/ProjetFormationData/code/dashboard
+      - C:\Users\gary_\Desktop\Git Cryptobot-beta\Cryptobot\ProjetFormationData\code\data\data_processed:/app/ProjetFormationData/code/data/data_processed
+      - C:\Users\gary_\Desktop\Git Cryptobot-beta\Cryptobot\ProjetFormationData\code\Model:/app/ProjetFormationData/code/Model
+      - C:\Users\gary_\Desktop\Git Cryptobot-beta\Cryptobot\ProjetFormationData\code\models:/app/ProjetFormationData/code/models
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URI=mongodb://CryptoBot:bot123@mongodb:27017/
+      - PYTHONPATH=/app
+      - FLASK_APP=dashboard.py
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+    working_dir: /app/ProjetFormationData/code/dashboard
+    command: python -m flask run --host=0.0.0.0 --port=5000
+
+volumes:
+  mongodb_data:
