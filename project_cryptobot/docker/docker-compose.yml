@@ -11,6 +11,29 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+  
+  airflow-webserver:
+    image: apache/airflow:2.5.0
+    container_name: airflow-webserver
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs 
+
+  airflow-scheduler:
+    image: apache/airflow:2.5.0
+    container_name: airflow-scheduler
+    command: "scheduler"
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
 
   jupyter:
     build: .
