@@ -1,16 +1,41 @@
 version: '3.8'
 
 services:
+  fastapi:
+    build: 
+    context: ..
+    dockerfile: ./docker/Dockerfile.fastapi
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    volumes:
+      - ../src:/app
+    networks:
+      - mongo_network
+
+  flask:
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile.flask
+    ports:
+      - "5001:5000"
+    volumes:
+      - ../dashboard:/app
+    networks:
+      - app_network
+
   mongodb:
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongodb_cryptobot
     environment:
-      MONGO_INITDB_ROOT_USERNAME: CryptoBot
-      MONGO_INITDB_ROOT_PASSWORD: bot123
+      - MONGO_INITDB_DATABASE=Cryptobot  
+      - MONGO_INITDB_ROOT_USERNAME=CryptoBot  
+      - MONGO_INITDB_ROOT_PASSWORD=bot123 
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data:/data/db
+      - ../src/initdb.d:/docker-entrypoint-initdb.d 
   
   airflow-webserver:
     image: apache/airflow:2.5.0
@@ -45,19 +70,18 @@ services:
     command: ["python", "-m", "jupyterlab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
 
   cryptobot:
-    build: .
+    build: 
+      context: ..
+      dockerfile: ./docker/Dockerfile.flask
     container_name: cryptobot_dashboard
     ports:
       - "5000:5000"
     volumes:
-      - C:\Users\gary_\Desktop\Git Cryptobot-beta\Cryptobot\ProjetFormationData\code\dashboard:/app/ProjetFormationData/code/dashboard
-      - C:\Users\gary_\Desktop\Git Cryptobot-beta\Cryptobot\ProjetFormationData\code\data\data_processed:/app/ProjetFormationData/code/data/data_processed
-      - C:\Users\gary_\Desktop\Git Cryptobot-beta\Cryptobot\ProjetFormationData\code\Model:/app/ProjetFormationData/code/Model
-      - C:\Users\gary_\Desktop\Git Cryptobot-beta\Cryptobot\ProjetFormationData\code\models:/app/ProjetFormationData/code/models
+      - ../dashboard:/app
     depends_on:
       - mongodb
     environment:
-      - MONGODB_URI=mongodb://CryptoBot:bot123@mongodb:27017/
+      - MONGODB_URI=mongodb://CryptoBot:bot123@mongodb:27017/Cryptobot
       - PYTHONPATH=/app
       - FLASK_APP=dashboard.py
       - FLASK_ENV=development
