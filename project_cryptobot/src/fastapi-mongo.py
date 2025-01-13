@@ -5,16 +5,20 @@ from typing import List, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
-from models import MarketData, UpdateMarketData, Indicator, UpdateIndicator
-from pydantic import BaseModel
+from models import MarketData, UpdateMarketData,PredictionRequest
+from predictions import load_data, load_scalers, make_pred 
 from bson import ObjectId
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
 import uvicorn
+from tensorflow.keras.models import load_model
 
 # Load environment variables
 dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
 load_dotenv(dotenv_path)
+
+# Define model directory
+MODEL_DIR = os.getenv("MODEL_DIR", "../models")
 
 # MongoDB Configuration
 MONGO_DETAILS = {
@@ -32,7 +36,6 @@ client = AsyncIOMotorClient(
     password=MONGO_DETAILS["password"],
 )
 db = client["Cryptobot"]
-
 # Helper to convert MongoDB ObjectId
 def document_to_dict(doc):
     doc["_id"] = str(doc["_id"])
@@ -40,48 +43,6 @@ def document_to_dict(doc):
 
 
 # Load and process data
-async def load_processed_data(processed_dir):
-    all_data = {}
-    for filename in os.listdir(processed_dir):
-        if filename.endswith("_final.json"):
-            symbol = filename.replace("_final.json", "")
-            filepath = os.path.join(processed_dir, filename)
-            with open(filepath, 'r') as f:
-                data = json.load(f)
-                meta_data = data.get("metadata", {})
-                data_market = data.get("data", [])
-                
-                transformed_data = []
-                for record in data_market:
-                    indicator = {
-                        "BB_UPPER": record.pop("BB_UPPER"),
-                        "BB_LOWER": record.pop("BB_LOWER"),
-                        "RSI": record.pop("RSI"),
-                        "DOJI": record.pop("DOJI"),
-                        "HAMMER": record.pop("HAMMER"),
-                        "SHOOTING_STAR": record.pop("SHOOTING_STAR"),
-                    }
-                    
-                    record.update(meta_data)
-                    
-                    transformed_data.append({
-                        "symbol": record["symbol"],
-                        "last_updated": datetime.strptime(record["last_updated"], "%Y-%m-%d %H:%M:%S"),
-                        "rows": record["rows"],
-                        "openTime": datetime.strptime(record["openTime"], "%Y-%m-%d %H:%M:%S"),
-                        "open": record["open"],
-                        "high": record["high"],
-                        "low": record["low"],
-                        "close": record["close"],
-                        "volume": record["volume"],
-                        "trend": record["trend"],
-                        "volume_price_ratio": record["volume_price_ratio"],
-                        "indicator": indicator
-                    })
-                
-                all_data[symbol] = transformed_data
-    return all_data
-
 # Create collection if not exists
 async def create_collection(db, collection_name, validator=None):
     if collection_name not in await db.list_collection_names():
@@ -102,31 +63,20 @@ async def insert_data_to_mongo(db, collection_name, data):
             await collection.insert_many(data)
             print(f"Data inserted successfully into {collection_name}.")
         else:
-            print(f"Data insertion failed into {collection_name}.")
+            print(f"Data insertion failed into {collection_name}: {e}")
     except Exception as e:
-        print(f"Error during data insertion into {collection_name}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error during data insertion into {collection_name}: {e}")
 
 # Lifespan context manager
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Connecting to MongoDB...")
     app.state.db = client.Cryptobot
-
     try:
-        data_dir = os.path.join(os.path.dirname(__file__), "../data/data_processed")
-        if not os.path.exists(data_dir):
-            raise FileNotFoundError(f"Data directory not found: {data_dir}")
-
-        processed_data = await load_processed_data(data_dir)
-        print(f"Processed data loaded: {processed_data.keys()}")
-
         await create_collection(app.state.db, "market_data")
         await create_collection(app.state.db, "prediction_ml")
-        for symbol, records in processed_data.items():
-            print(f"Inserting data for {symbol}")
-            await insert_data_to_mongo(app.state.db, "market_data", records)
 
-        print("Startup data loaded successfully.")
+        print("MongoDB connection established and Collection created successfully.")
     except Exception as e:
         print(f"Error during startup: {e}")
         raise
@@ -148,7 +98,7 @@ async def read_root():
 @app.post("/market_data", response_model=dict)
 async def create_market_data(data: MarketData):
     try:
-        new_data = data.dict()
+        new_data = data.model_dump()
         result = await db.market_data.insert_one(new_data)
         created_doc = await db.market_data.find_one({"_id": result.inserted_id})
         return document_to_dict(created_doc)
@@ -190,6 +140,71 @@ async def delete_market_data(item_id: str):
     return document_to_dict(deleted_doc)
 
 ## Collection ML Prediction
+async def save_data(symbol, future_pred):
+    document = {
+        'symbol': symbol,
+        'predictions': future_pred,
+        'metadata': {
+            'created_at': datetime.utcnow()
+        }
+    }
+    result = await db.prediction_ml.insert_one(document)
+    return result.inserted_id
 
+async def save_data(symbol, future_pred):
+    # Récupérer les données existantes
+    existing_doc = await db.prediction_ml.find_one({"symbol": symbol})
+
+    if existing_doc:
+        existing_predictions = {pred["timestamp"]: pred["prediction"] for pred in existing_doc["predictions"]}
+        unique_predictions = [
+            pred for pred in future_pred if pred["timestamp"] not in existing_predictions
+        ]
+        if unique_predictions:
+            result = await db.prediction_ml.update_one(
+                {"symbol": symbol},
+                {"$push": {"predictions": {"$each": unique_predictions}}}
+            )
+            
+            return result 
+    else:
+        document = {
+            'symbol': symbol,
+            'predictions': future_pred,
+            'metadata': {
+                'created_at': datetime.utcnow()
+            }
+        }
+        result = await db.prediction_ml.insert_one(document)
+    
+        return result.inserted_id
+
+
+@app.post("/predict/")
+async def predict(request: PredictionRequest):
+    try:
+        MODEL_DIR = os.path.join(os.path.dirname(__file__), '../models')
+        os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+        symbol = request.symbol
+        interval_hours = request.interval_hours
+        
+        # Charger le modèle
+        model_path = f"{MODEL_DIR}/{symbol}_best_model.keras"
+        if not os.path.exists(model_path):
+            raise HTTPException(status_code=404, detail="Model not found")
+
+        model = load_model(model_path)
+        scaler, scaler_y = load_scalers(symbol)
+        features = ["open", "high", "low", "volume", "trend", "volume_price_ratio", "BB_MA", "BB_UPPER", "BB_LOWER", "RSI"]
+        latest_data, last_timestamp = load_data(symbol, features, scaler, model)
+        future_pred = make_pred(symbol, model, scaler_y, latest_data, last_timestamp, interval_hours, db)
+
+        # Sauvegarder les prédictions dans MongoDB
+        saved_id = await save_data(symbol, future_pred)
+
+        return {"symbol": symbol, "predictions": future_pred, "saved_id": str(saved_id)}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 if __name__ == "__main__":
     uvicorn.run("fastapi-mongo:app", host="127.0.0.1", port=8000, reload=True)

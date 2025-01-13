@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 # Technical indicators sub-model
 class Indicator(BaseModel):
+    BB_MA: float
     BB_UPPER: float
     BB_LOWER: float
     RSI: float
@@ -28,6 +29,7 @@ class MarketData(BaseModel):
 
 # Models updates
 class UpdateIndicator(BaseModel):
+    BB_MA: Optional[float]
     BB_UPPER: Optional[float]
     BB_LOWER: Optional[float]
     RSI: Optional[float]
@@ -49,3 +51,8 @@ class UpdateMarketData(BaseModel):
     trend: Optional[int]
     volume_price_ratio: Optional[float]
     indicator: UpdateIndicator
+
+class PredictionRequest(BaseModel):
+    symbol: str
+    interval_hours: int = 4
+

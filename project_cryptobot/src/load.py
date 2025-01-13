@@ -78,6 +78,7 @@ def load_processed_data(processed_dir):
                 for record in data_market:
                     # Regrouper les indicateurs dans un champ "indicator"
                     indicator = {
+                        "BB_MA": record.pop("BB_MA"),
                         "BB_UPPER": record.pop("BB_UPPER"),
                         "BB_LOWER": record.pop("BB_LOWER"),
                         "RSI": record.pop("RSI"),
