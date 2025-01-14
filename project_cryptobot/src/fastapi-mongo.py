@@ -41,8 +41,6 @@ def document_to_dict(doc):
     doc["_id"] = str(doc["_id"])
     return doc
 
-
-# Load and process data
 # Create collection if not exists
 async def create_collection(db, collection_name, validator=None):
     if collection_name not in await db.list_collection_names():
@@ -140,17 +138,6 @@ async def delete_market_data(item_id: str):
     return document_to_dict(deleted_doc)
 
 ## Collection ML Prediction
-async def save_data(symbol, future_pred):
-    document = {
-        'symbol': symbol,
-        'predictions': future_pred,
-        'metadata': {
-            'created_at': datetime.utcnow()
-        }
-    }
-    result = await db.prediction_ml.insert_one(document)
-    return result.inserted_id
-
 async def save_data(symbol, future_pred):
     # Récupérer les données existantes
     existing_doc = await db.prediction_ml.find_one({"symbol": symbol})
