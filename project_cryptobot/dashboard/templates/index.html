@@ -6,116 +6,123 @@
     <title>Cryptobot Dashboard</title>
     
     <!-- CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v={{ range(1, 9999) | random }}">
     
     <!-- JavaScript -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}?v={{ range(1, 9999) | random }}"></script>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container">
-            <span class="navbar-brand">Cryptobot Dashboard</span>
-            <span class="navbar-text">
-                Dernière mise à jour: {{ current_time }}
-            </span>
-        </div>
-    </nav>
+    <div class="app-container">
+        <!-- Panneau latéral avec prédictions -->
+        <div class="sidebar">
+            <div class="sidebar-content">
+                <h2>Configuration</h2>
+                <div class="control-panel">
+                    <div class="symbol-select-container">
+                        <label for="symbol-select">Paire de trading</label>
+                        <select id="symbol-select" class="form-select">
+                            <option value="">Choisir une paire</option>
+                            {% for symbol in symbols %}
+                            <option value="{{ symbol }}">{{ symbol }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-    <!-- Contenu principal -->
-    <div class="container mt-4">
-        <div class="row">
-            <!-- Panneau de contrôle -->
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Configuration</h5>
-                        
-                        <!-- Sélection de la paire -->
-                        <div class="symbol-select-container">
-                            <label for="symbol-select" class="form-label">Paire de trading</label>
-                            <select id="symbol-select" class="form-select">
-                                <option value="">Choisir une paire</option>
-                                {% for symbol in symbols %}
-                                <option value="{{ symbol }}">{{ symbol }}</option>
-                                {% endfor %}
-                            </select>
+                    <div class="indicators-select-container">
+                        <label for="technical-select">Indicateurs techniques</label>
+                        <select id="technical-select" class="form-select">
+                            <option value="BB">Bollinger Bands</option>
+                            <option value="RSI">RSI</option>
+                            <option value="EMA">EMA</option>
+                            <option value="MACD">MACD</option>
+                            <option value="STOCH">Stochastique</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Prédictions déplacées dans la sidebar -->
+                <div class="predictions-section">
+                    <div class="prediction-grid">
+                        <div class="prediction-box">
+                            <span class="label">Prix Réel</span>
+                            <span id="real-price" class="value">2,600</span>
                         </div>
-
-                        <!-- Paramètres des indicateurs -->
-                        <div class="indicator-settings">
-                            <h6>Paramètres des indicateurs</h6>
-                            <div class="mb-3">
-                                <label for="bb-period" class="form-label">Période Bollinger</label>
-                                <input type="number" class="form-control" id="bb-period" value="20">
-                            </div>
-                            <div class="mb-3">
-                                <label for="rsi-period" class="form-label">Période RSI</label>
-                                <input type="number" class="form-control" id="rsi-period" value="14">
-                            </div>
+                        <div class="prediction-box">
+                            <span class="label">Prix Prédis</span>
+                            <span id="predicted-price" class="value">2,540</span>                            
+                        </div>
+                        <div class="prediction-box">
+                            <span class="label">Variation</span>
+                            <span id="price-variation" class="value">2,350</span>
+                            <span class="percentage positive">(+7.5%)</span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Zone des graphiques -->
-            <div class="col-md-9">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Prédictions</h5>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="prediction-box">
-                                    <h6>Prix Actuel</h6>
-                                    <p id="current-price">-</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="prediction-box">
-                                    <h6>Prix Prédit</h6>
-                                    <p id="predicted-price">-</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="prediction-box">
-                                    <h6>Variation Prédite</h6>
-                                    <p id="price-diff">-</p>
-                                </div>
-                            </div>
+        <!-- Contenu principal -->
+        <div class="main-content">
+            <div class="trading-header">
+                <div class="price-symbol-section">
+                    <div class="current-price">
+                        <span id="current-price" class="price">-</span>
+                        <span id="selected-symbol" class="symbol">-</span>
+                    </div>
+                </div>
+
+                <div class="trading-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">24h Change</span>
+                        <span id="price-change" class="stat-value">-</span>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-label">24H High/Low</span>
+                        <div class="high-low-value">
+                            <span id="price-high" class="stat-value">-</span>
+                            <span class="separator">/</span>
+                            <span id="price-low" class="stat-value">-</span>
                         </div>
                     </div>
-                </div>
-            
-                <!-- Messages d'erreur -->
-                <div class="error-message alert alert-danger" role="alert"></div>
-                
-                <!-- Indicateur de chargement -->
-                <div class="loading-overlay"></div>
-                <div class="loading">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Chargement...</span>
+
+                    <div class="stat-item">
+                        <span class="stat-label">24H Volume</span>
+                        <span id="volume" class="stat-value">-</span>
                     </div>
                 </div>
+            </div>
 
-                <!-- Graphiques -->
-                <div id="price-volume-chart" class="chart-container"></div>
+            <div class="chart-section">
+                <div class="chart-controls">
+                    <div class="controls-group">
+                        <div class="chart-tabs">
+                            <button class="tab active">Chart</button>                            
+                        </div>                        
+                    </div>
+
+                    <div class="timeframe-selector">
+                        <button class="timeframe active">1D</button>
+                        <button class="timeframe">7D</button>
+                        <button class="timeframe">1M</button>
+                        <button class="timeframe">3M</button>
+                        <button class="timeframe">6M</button>
+                        <button class="timeframe">1Y</button>
+                        <button class="timeframe">ALL</button>
+                    </div>
+                </div>
                 <div id="technical-chart" class="chart-container"></div>
+            </div>
+
+            <div class="error-message" role="alert"></div>
+            <div class="loading-overlay"></div>
+            <div class="loading">
+                <div class="spinner"></div>
             </div>
         </div>
     </div>
-
-    <!-- Template pour les messages d'erreur -->
-    <template id="error-template">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <span class="message"></span>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    </template>
-
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

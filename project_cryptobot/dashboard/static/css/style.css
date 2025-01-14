@@ -1,118 +1,372 @@
-/* Style principal du dashboard */
-.navbar-brand {
-    font-weight: bold;
-    font-size: 1.5rem;
+/* Variables globales */
+:root {
+    --bg-dark: #0D1117;
+    --bg-card: #161B22;
+    --text-primary: #E6EDF3;
+    --text-secondary: #7D8590;
+    --accent-blue: #4F46E5;
+    --green: #238636;
+    --red: #F85149;
+    --border-color: #30363D;
 }
 
-.card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.5;
+}
+
+/* Layout principal */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border-color);
+}
+
+.sidebar-content {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
     margin-bottom: 20px;
+}
+
+.control-panel {
+    margin-bottom: 15px;
+}
+
+/* Styles des sélecteurs */
+.symbol-select-container,
+.indicators-select-container {
+    margin-bottom: 15px;
+}
+
+.symbol-select-container label,
+.indicators-select-container label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 8px;
+}
+
+.form-select {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.form-select:hover {
+    border-color: var(--accent-blue);
+}
+
+/* Prédictions */
+.predictions-section {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: auto;
+    margin-bottom: 15px;
+}
+
+
+.prediction-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.prediction-box {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.prediction-box .label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    display: block;
+    text-align: center;
+}
+
+.prediction-box .value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+    text-align: center;
+    display: block;
+}
+
+.prediction-box .percentage {
+    font-size: 0.8rem;
+    text-align: center;
+    display: block;
+    margin-top: 2px;
+}
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+}
+
+/* Trading Header */
+.trading-header {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.price-symbol-section .current-price {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.price-symbol-section .price {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.price-symbol-section .symbol {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+}
+
+.trading-stats {
+    display: flex;
+    gap: 40px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.high-low-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.separator {
+    color: var(--text-secondary);
+}
+
+/* Chart Section */
+.chart-section {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.chart-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.chart-tabs, .timeframe-selector {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tab, .timeframe {
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.tab:hover, .timeframe:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.tab.active, .timeframe.active {
+    background-color: var(--accent-blue);
+    color: white;
+    border-color: var(--accent-blue);
 }
 
 .chart-container {
-    position: relative;
-    min-height: 400px;
-    height: calc(45vh - 50px);
+    height: 400px;
     margin-bottom: 20px;
-    background-color: white;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
     overflow: hidden;
 }
 
-.loading {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
+/* Positive/Negative States */
+.positive {
+    color: var(--green);
 }
 
+.negative {
+    color: var(--red);
+}
+
+/* Loading and Error */
 .loading-overlay {
-    display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.8);
-    z-index: 999;
-}
-
-.symbol-select-container {
-    padding: 15px;
-}
-
-.timeframe-select {
-    margin-top: 10px;
-}
-
-.indicator-settings {
-    margin-top: 20px;
-    padding: 15px;
-}
-
-.error-message {
-    color: #dc3545;
-    padding: 10px;
-    margin-top: 10px;
+    background-color: rgba(13, 17, 23, 0.8);
+    z-index: 1000;
     display: none;
 }
 
-/* Style des tableaux de données */
-.data-table {
-    width: 100%;
-    margin-top: 20px;
+.loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    display: none;
 }
 
-.data-table th {
-    background-color: #f8f9fa;
-    font-weight: bold;
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--text-secondary);
+    border-top-color: var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
-/* Styles pour les prédictions */
-.prediction-box {
-    background-color: white;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    min-height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.error-message {
+    padding: 12px;
+    background-color: rgba(248, 81, 73, 0.1);
+    border: 1px solid var(--red);
+    color: var(--red);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: none;
 }
 
-.prediction-box h6 {
-    margin-bottom: 10px;
-    color: #495057;
-    font-weight: bold;
-}
-
-.prediction-box p {
-    font-size: 1.4em;
-    margin: 0;
-    font-weight: bold;
-}
-
-.positive-diff {
-    color: #28a745;
-}
-
-.negative-diff {
-    color: #dc3545;
-}
-/* Style responsive */
-@media (max-width: 768px) {
-    .chart-container {
-        height: calc(50vh - 50px);
-        min-height: 300px;
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
     }
-    
-    .navbar-brand {
-        font-size: 1.2rem;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+    .trading-stats {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .main-content {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+
+    .trading-header {
+        flex-direction: column;
+    }
+
+    .trading-stats {
+        margin-top: 20px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .chart-controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .timeframe-selector {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .trading-stats {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .stat-item {
+        align-items: center;
+    }
+
+    .chart-container {
+        height: 300px;
     }
 }
