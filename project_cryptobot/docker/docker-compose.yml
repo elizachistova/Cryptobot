@@ -3,27 +3,16 @@ version: '3.8'
 services:
   fastapi:
     build: 
-    context: ..
-    dockerfile: ./docker/Dockerfile.fastapi
+      context: ..
+      dockerfile: docker/Dockerfile.fastapi
     ports:
       - "8000:8000"
     depends_on:
       - mongodb
     volumes:
       - ../src:/app
-    networks:
-      - mongo_network
-
-  flask:
-    build:
-      context: ..
-      dockerfile: ./docker/Dockerfile.flask
-    ports:
-      - "5001:5000"
-    volumes:
-      - ../dashboard:/app
-    networks:
-      - app_network
+    #networks:
+     # - mongo_network
 
   mongodb:
     image: mongo:latest
@@ -37,57 +26,96 @@ services:
     volumes:
       - ../src/initdb.d:/docker-entrypoint-initdb.d 
   
-  airflow-webserver:
-    image: apache/airflow:2.5.0
-    container_name: airflow-webserver
-    environment:
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
-      - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./airflow/dags:/opt/airflow/dags
-      - ./airflow/logs:/opt/airflow/logs 
+  #flask:
+   # build:
+    #  context: ..
+    # dockerfile: ./Dockerfile.flask
+    #ports:
+    #  - "5001:5000"
+    #volumes:
+    #  - ../dashboard:/app
+    #networks:
+    #  - app_network
 
-  airflow-scheduler:
-    image: apache/airflow:2.5.0
-    container_name: airflow-scheduler
-    command: "scheduler"
+  airflow-webserver:
+    image: apache/airflow:2.7.0
+    restart: always
     environment:
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+      AIRFLOW__CORE__EXECUTOR: "LocalExecutor"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
+      AIRFLOW__WEBSERVER__RBAC: "true"
+      AIRFLOW_UID: "50000"
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/logs:/opt/airflow/logs
-
-  jupyter:
-    build: .
-    container_name: jupyter
     ports:
-      - "8888:8888"
-    volumes:
-      - .:/app
-    command: ["python", "-m", "jupyterlab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
-
-  cryptobot:
-    build: 
-      context: ..
-      dockerfile: ./docker/Dockerfile.flask
-    container_name: cryptobot_dashboard
-    ports:
-      - "5000:5000"
-    volumes:
-      - ../dashboard:/app
+      - "8080:8080"
+    command: ["airflow", "webserver"]
     depends_on:
-      - mongodb
+      - airflow-init
+  
+  airflow-scheduler:
+    image: apache/airflow:2.7.0
+    restart: always
+    command: scheduler
     environment:
-      - MONGODB_URI=mongodb://CryptoBot:bot123@mongodb:27017/Cryptobot
-      - PYTHONPATH=/app
-      - FLASK_APP=dashboard.py
-      - FLASK_ENV=development
-      - FLASK_DEBUG=1
-    working_dir: /app/ProjetFormationData/code/dashboard
-    command: python -m flask run --host=0.0.0.0 --port=5000
+      AIRFLOW__CORE__EXECUTOR: "LocalExecutor"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
+      AIRFLOW_UID: "50000"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+    depends_on:
+      - airflow-init
+  
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    
+  airflow-init:
+    image: apache/airflow:2.7.0
+    entrypoint: /bin/bash -c "airflow db init && airflow users create -r Admin -u team_admin -p projet_opa -e opateam@protonmail.com -f opa_team -l admin"
+    volumes:
+     - ./airflow/dags:/opt/airflow/dags
+     - ./airflow/logs:/opt/airflow/logs
+
+  #jupyter:
+  #  build: .
+  #  container_name: jupyter
+  #  ports:
+  #    - "8888:8888"
+  #  volumes:
+  #    - .:/app
+  #  command: ["python", "-m", "jupyterlab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+  
+  #cryptobot:
+#    build: 
+#      context: ..
+#      dockerfile: ./docker/Dockerfile.flask
+#    container_name: cryptobot_dashboard
+#    ports:
+#      - "5000:5000"
+#    volumes:
+#      - ../dashboard:/app
+#    depends_on:
+#      - mongodb
+#    environment:
+#      - MONGODB_URI=mongodb://CryptoBot:bot123@mongodb:27017/Cryptobot
+#      - PYTHONPATH=/app
+#      - FLASK_APP=dashboard.py
+#      - FLASK_ENV=development
+#      - FLASK_DEBUG=1
+#    working_dir: /app/ProjetFormationData/code/dashboard
+#    command: python -m flask run --host=0.0.0.0 --port=5000
 
 volumes:
   mongodb_data:
+  postgres_data:
