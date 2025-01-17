@@ -13,14 +13,20 @@ RUN apt-get update && apt-get install -y \
    pkg-config \
    && rm -rf /var/lib/apt/lists/*
 
-COPY ./docker/requirements.txt /app/requirements.txt
+# Le requirements.txt est dans le même dossier que le Dockerfile
+COPY docker/requirements.txt /app/requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./dashboard /app
+# Copier le contenu nécessaire
+COPY dashboard /app/dashboard
+COPY data /app/data
+COPY model /app/model
+COPY models /app/models
+COPY src /app/src
 
 EXPOSE 5000
 
-ENV FLASK_APP=/app/ProjetFormationData/code/dashboard/dashboard.py
+ENV FLASK_APP=/app/dashboard/dashboard.py
 ENV FLASK_DEBUG=1
 ENV PYTHONPATH=/app
