@@ -13,31 +13,32 @@ with DAG(
     # Every 4 hours
     schedule_interval='0 */4 * * *',
     start_date=datetime(2025, 1, 1),
-    catchup=False
+    catchup=False,
+    tags=['cryptobot'],
 ) as dag:
 
     # Task 1: Data Collection
     fetch_data = BashOperator(
         task_id='fetch_data',
-        bash_command="python ../../src/extract.py",
+        bash_command="python /opt/airflow/src/extract.py",
     )
 
     # Task 2: Preprocess Data
     preprocess_data = BashOperator(
         task_id='preprocess_data',
-        bash_command='python ../../src/Data_processor.py',
+        bash_command='python /opt/airflow/src/Data_processor.py',
     )
 
     # Task 3: Model Prediction
     model_prediction = BashOperator(
         task_id='model_prediction',
-        bash_command='python ../../src/predictions.py',
+        bash_command='python /opt/airflow/src/predictions.py',
     )
 
     # Task 4: Database Update
     db_update = BashOperator(
         task_id='db_update',
-        bash_command='python ../../src/fastapi-mongo.py',
+        bash_command='python /opt/airflow/src/fastapi-mongo.py',
     )
 
     # Task 5: Dashboard Update
