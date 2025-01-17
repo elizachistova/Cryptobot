@@ -1,39 +1,97 @@
-import os
-import json
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, List
+from dotenv import load_dotenv
+from pymongo import MongoClient
+import os
 
-
-DATA_RAW_DIR = os.getenv('DATA_RAW_DIR', '/app/code/data/data_raw')
-DATA_PROCESSED_DIR = os.getenv('DATA_PROCESSED_DIR', '/app/code/data/data_processed')
-
-class DataLoader:
-    def __init__(self, data_dir: str):
-        self.data_dir = data_dir
-        self.dataframes = {}
-
-    def load_klines_data(self) -> Dict[str, pd.DataFrame]:
-       # print(f"Data directory: {self.data_dir}")
-        if not os.path.exists(self.data_dir):
-            raise FileNotFoundError(f"Directory {self.data_dir} does not exist")
-           
-        for filename in os.listdir(self.data_dir):
-            if filename.endswith(".json") and "data_klines" in filename:
-                pair = filename.replace('_data_klines.json', '')
-                filepath = os.path.join(self.data_dir, filename)
-                
-                try:
-                    with open(filepath, 'r') as f:
-                        data = json.load(f)
-                        if 'data' in data and isinstance(data['data'], list):
-                            df = pd.DataFrame(data['data'])
-                            self.dataframes[pair] = df
-                            print(f"Loaded {pair} data with {len(df)} rows")
-                except Exception as e:
-                    print(f"Error processing {filename}: {e}")
+class MongoDataHandler:
+    def __init__(self):
+        # Charger les variables d'environnement
+        dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
+        load_dotenv(dotenv_path)
         
-        return self.dataframes
+        # Connexion MongoDB
+        self.client = MongoClient(
+            host=os.getenv("HOST", "localhost").strip(","),
+            port=int(os.getenv("PORT", "27017").strip(",")),
+            username=os.getenv("USERNAME", "").strip(),
+            password=os.getenv("PASSWORD", "").strip()
+        )
+        self.db = self.client.Cryptobot
+
+    def get_unprocessed_data(self, symbol: str) -> pd.DataFrame:
+        """Récupère les données non traitées depuis raw_market_data"""
+        # Trouver le dernier timestamp traité dans market_data
+        last_processed = self.db.market_data.find_one(
+            {"symbol": symbol},
+            sort=[("openTime", -1)]
+        )
+        
+        # Construire la requête pour les nouvelles données
+        query = {"symbol": symbol}
+        if last_processed:
+            query["openTime"] = {"$gt": last_processed["openTime"]}
+        
+        # Récupérer les nouvelles données
+        cursor = self.db.raw_market_data.find(
+            query,
+            {"_id": 0}  # Exclure le champ _id
+        ).sort("openTime", 1)
+        
+        # Convertir en DataFrame
+        df = pd.DataFrame(list(cursor))
+        
+        if not df.empty:
+            # Conversion des types
+            numeric_cols = ['open', 'high', 'low', 'close', 'volume']
+            for col in numeric_cols:
+                df[col] = pd.to_numeric(df[col])
+            
+        return df
+
+    def save_processed_data(self, symbol: str, df: pd.DataFrame):
+        """Sauvegarde les données traitées dans market_data"""
+        if df.empty:
+            return
+            
+        # Préparation des documents
+        documents = []
+        for _, row in df.iterrows():
+            indicator = {
+                "BB_MA": row["BB_MA"],
+                "BB_UPPER": row["BB_UPPER"],
+                "BB_LOWER": row["BB_LOWER"],
+                "RSI": row["RSI"],
+                "DOJI": row["DOJI"],
+                "HAMMER": row["HAMMER"],
+                "SHOOTING_STAR": row["SHOOTING_STAR"]
+            }
+            
+            document = {
+                "symbol": symbol,
+                "openTime": row["openTime"],
+                "open": row["open"],
+                "high": row["high"],
+                "low": row["low"],
+                "close": row["close"],
+                "volume": row["volume"],
+                "trend": row["trend"],
+                "volume_price_ratio": row["volume_price_ratio"],
+                "indicator": indicator,
+                "last_updated": datetime.now()
+            }
+            documents.append(document)
+        
+        # Insertion dans MongoDB
+        if documents:
+            self.db.market_data.insert_many(documents)
+            print(f"Inserted {len(documents)} processed records for {symbol}")
+
+    def close(self):
+        if self.client:
+            self.client.close()
+
 
 class TechnicalIndicators:
     @staticmethod
@@ -59,6 +117,7 @@ class TechnicalIndicators:
         rs = avg_gain / avg_loss
         df['RSI'] = (100 - (100 / (1 + rs))).round(2)
         return df
+
 
 class CandlePatterns:
     def __init__(self, df: pd.DataFrame):
@@ -92,77 +151,62 @@ class CandlePatterns:
         
         return self.df
 
+
 class DataProcessor:
     @staticmethod
     def process_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-        # Conversion de base
-        df['openTime'] = pd.to_datetime(df['openTime'], unit='ms')
-        
-        numeric_cols = ['open', 'high', 'low', 'close', 'volume', 'quoteVolume']
-        for col in numeric_cols:
-            df[col] = pd.to_numeric(df[col], errors='coerce').round(2)
+        if df.empty:
+            return df
+            
+        # Calculs supplémentaires
+        df['trend'] = (df['close'] > df['open']).astype(int).replace({0: -1, 1: 1})
+        df['volume_price_ratio'] = (df['volume'] / df['close']).round(4)
         
         # Ajout des indicateurs techniques
         df = TechnicalIndicators.calculate_bollinger_bands(df)
         df = TechnicalIndicators.calculate_rsi(df)
         
-        
         # Ajout des patterns
         patterns = CandlePatterns(df)
         df = patterns.identify_patterns()
         
-        # Calculs supplémentaires
-        df['trend'] = (df['close'] > df['open']).astype(int).replace({0: -1, 1: 1})
-        df['volume_price_ratio'] = (df['volume'] / df['close']).round(4)
+        return df.dropna()
 
-        # Colonnes finales
-        final_columns = [
-            'openTime', 'open', 'high', 'low', 'close', 'volume',
-            'trend', 'volume_price_ratio',
-            'BB_MA', 'BB_UPPER', 'BB_LOWER',
-            'RSI',
-            'DOJI', 'HAMMER', 'SHOOTING_STAR'
-        ]
-        df = df[final_columns].dropna()
-        return df
-
-class DataSaver:
-    @staticmethod
-    def save_final_data(df: pd.DataFrame, symbol: str, output_dir: str):
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-            
-        output_file = os.path.join(output_dir, f"{symbol}_final.json")
-        
-        df_json = df.copy()
-        df_json['openTime'] = df_json['openTime'].dt.strftime('%Y-%m-%d %H:%M:%S')
-        
-        json_data = {
-            'metadata': {
-                'symbol': symbol,
-                'rows': len(df),
-                'last_updated': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            },
-            'data': df_json.to_dict(orient='records')
-        }
-        
-        with open(output_file, 'w') as f:
-            json.dump(json_data, f, indent=4)
-        print(f"Saved processed data to {output_file}")
 
 def main():
-    data_dir = os.path.join(os.path.dirname(__file__), '../data/data_raw')
-    output_dir = os.path.join(os.path.dirname(__file__), '../data/data_processed')
-    
-    loader = DataLoader(data_dir)
-    dataframes = loader.load_klines_data()
-    
-    processor = DataProcessor()
-    saver = DataSaver()
-    
-    for symbol, df in dataframes.items():
-        processed_df = processor.process_dataframe(df)
-        saver.save_final_data(processed_df, symbol, output_dir)
+    try:
+        # Initialisation du gestionnaire de données MongoDB
+        mongo_handler = MongoDataHandler()
+        
+        # Récupérer la liste des symboles depuis raw_market_data
+        symbols = mongo_handler.db.raw_market_data.distinct("symbol")
+        
+        processor = DataProcessor()
+        
+        for symbol in symbols:
+            try:
+                # Récupérer les nouvelles données non traitées
+                df = mongo_handler.get_unprocessed_data(symbol)
+                
+                if not df.empty:
+                    # Traiter les données
+                    processed_df = processor.process_dataframe(df)
+                    
+                    # Sauvegarder les résultats
+                    mongo_handler.save_processed_data(symbol, processed_df)
+                else:
+                    print(f"Pas de nouvelles données à traiter pour {symbol}")
+                    
+            except Exception as e:
+                print(f"Erreur lors du traitement de {symbol}: {e}")
+                continue
+                
+    except Exception as e:
+        print(f"Erreur générale: {e}")
+        
+    finally:
+        mongo_handler.close()
+
 
 if __name__ == "__main__":
     main()

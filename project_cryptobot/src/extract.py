@@ -3,74 +3,13 @@ import os
 import requests
 import time
 from datetime import datetime, timedelta
+from pymongo import MongoClient
+from dotenv import load_dotenv
 
 
-DATA_RAW_DIR = os.path.join(os.path.dirname(__file__), '../data/data_raw')
-DATA_PROCESSED_DIR = os.path.join(os.path.dirname(__file__), '../data/data_processed')
-CONFIG_DIR = os.path.join(os.path.dirname(__file__), '../config/config.json')
-
-
-def create_config():
-    """
-    Crée le fichier config.json avec les paramètres par défaut si il n'existe pas
-    """
-    # Configuration par défaut
-    default_config = {
-        "symbols": ["BTCUSDT", "ETHUSDT"],
-        "interval": "4h",
-        "limit": 1000,
-        "columns_klines": [
-            "openTime",
-            "open",
-            "high",
-            "low",
-            "close",
-            "volume",
-            "closeTime",
-            "quoteVolume",
-            "numTrades",
-            "takerBuyBaseVolume",
-            "takerBuyQuoteVolume",
-            "ignore"
-        ],
-        "columns_trades": [
-            "id",
-            "price",
-            "qty",
-            "quoteQty",
-            "time",
-            "isBuyerMaker",
-            "isBestMatch"
-        ],
-        "api_endpoints": {
-            "binance_klines": "https://testnet.binance.vision/api/v3/klines",
-            "binance_ticker": "https://testnet.binance.vision/api/v3/ticker/24hr",
-            "binance_trades": "https://testnet.binance.vision/api/v3/trades"
-        }
-    }
-
-  # Création des dossiers nécessaires
-  # os.makedirs('/app/code/config', exist_ok=True)
-  # os.makedirs('app/code/data_raw', exist_ok=True)
-
-   # config_path = os.path.join(CONFIG_DIR)
-    
-    # Vérifier si le fichier existe déjà
-    #if not os.path.exists(config_path):
-      #  with open(config_path, 'w') as f:
-       #     json.dump(default_config, f, indent=4)
-        #    print(f"Fichier de configuration créé : {config_path}")
-    
-    # return default_config
-
-def load_config(CONFIG_DIR=os.path.join(os.path.dirname(__file__), '../config/config.json')):
-    
+def load_config(CONFIG_DIR='/app/code/config/config.json'):
     """
     Loads the configuration json file.
-    
-    Parameters: 
-    ----------
-    Config_path: Path to the config file.
     
     Returns: 
     -------
@@ -79,25 +18,45 @@ def load_config(CONFIG_DIR=os.path.join(os.path.dirname(__file__), '../config/co
     try:
         with open(CONFIG_DIR, 'r') as file:
             return json.load(file)
+        
     except FileNotFoundError:
-        print("Configuration file not found. Creating default configuration...")
-        return create_config()
-  
-def fetch_data_klines(endpoint, symbol, interval, columns, limit, start_date=None, end_date=None):
-    data_klines = []
-
+        raise FileNotFoundError(f"Configuration file not found at {CONFIG_DIR}")
+    
+    
+def fetch_data_klines(mongodb_client, symbol, interval, columns, limit, start_date=None, end_date=None):
+    """
+    Récupère les données klines et les insère directement dans raw_market_data
+    
+    Args:
+        mongodb_client: Client MongoDB
+        symbol: Paire de trading (ex: "BTCUSDT")
+        interval: Intervalle temporel
+        columns: Noms des colonnes
+        limit: Limite de données par requête
+        start_date: Date de début (optionnel)
+        end_date: Date de fin (optionnel)
+    """
     if end_date is None:
         end_date = datetime.now()
     if start_date is None:
-        print("Fetching from the earliest available data.")
+        # On ne prend que 7 jours de données
+        start_date = end_date - timedelta(days=7)
 
     end_timestamp = int(end_date.timestamp() * 1000)
-    start_timestamp = int(start_date.timestamp() * 1000) if start_date else 0
+    start_timestamp = int(start_date.timestamp() * 1000)
 
-    params = {'symbol': symbol, 'interval': interval, 'limit': limit, 'startTime': start_timestamp, 'endTime': end_timestamp}
+    params = {
+        'symbol': symbol, 
+        'interval': interval, 
+        'limit': limit, 
+        'startTime': start_timestamp, 
+        'endTime': end_timestamp
+    }
 
+    raw_market_data = mongodb_client.Cryptobot.raw_market_data
+    
     while True:
-        response = requests.get(endpoint, params=params)
+        response = requests.get(endpoint_klines, params=params)
         
         if response.status_code != 200:
             raise Exception(f"Error: {response.status_code},{response.text}")
@@ -108,24 +67,41 @@ def fetch_data_klines(endpoint, symbol, interval, columns, limit, start_date=Non
             print("No more data returned, breaking the loop.")
             break
         
+        # Préparation des documents pour MongoDB
+        documents = []
         for kline in klines:
-            kline_dict = dict(zip(columns, kline))
-            data_klines.append(kline_dict)
-        
-        params['startTime'] = klines[-1][0] + 1
+            document = dict(zip(columns, kline))
+            # Conversion des types pour MongoDB
+            document['symbol'] = symbol
+            document['openTime'] = datetime.fromtimestamp(document['openTime'] / 1000)
+            document['open'] = float(document['open'])
+            document['high'] = float(document['high'])
+            document['low'] = float(document['low'])
+            document['close'] = float(document['close'])
+            document['volume'] = float(document['volume'])
+            documents.append(document)
 
-        print(f"Fetched {len(data_klines)} rows for {symbol} from {start_date if start_date else 'earliest available'} to {end_date.strftime('%Y-%m-%d')}")
+        # Insertion par lots dans MongoDB
+        if documents:
+            try:
+                raw_market_data.insert_many(documents)
+                print(f"Inserted {len(documents)} documents for {symbol}")
+            except Exception as e:
+                print(f"Error inserting documents for {symbol}: {e}")
+
+        # Mise à jour du startTime pour la prochaine itération
+        params['startTime'] = klines[-1][0] + 1
+        
         if klines[-1][0] >= end_timestamp:
             print("Reached end date, breaking the loop.")
             break
-        time.sleep(0.1)
+            
+        time.sleep(0.1)  # Respect des limites de l'API
 
-    data_klines.sort(key=lambda x: x['openTime'], reverse=True)
-    
-    return data_klines
+    return len(documents)  # Retourne le nombre de documents insérés
+
 
 def fetch_data_ticker(endpoint, symbol):
-      
       """ 
       Fetches ticker data from Binance (last 24hr).
 
@@ -149,6 +125,7 @@ def fetch_data_ticker(endpoint, symbol):
       ticker = response.json()
     
       return ticker
+
 
 def fetch_data_trades(endpoint, symbol, columns, limit):
       """ 
@@ -188,6 +165,7 @@ def fetch_data_trades(endpoint, symbol, columns, limit):
     
       return data_trades
 
+
 def load_data(symbol, data, data_type, columns=None):
     """
     Saves the fetched data in the JSON file for each symbol.
@@ -207,8 +185,12 @@ def load_data(symbol, data, data_type, columns=None):
         json.dump({'data': data}, file, indent=4)
     print(f"Data saved to {filename}")    
 
+
 def main():
-    #Extracting common parameters
+    # Charger les variables d'environnement et la configuration
+    dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
+    load_dotenv(dotenv_path)
+
     config = load_config()
     symbols = config["symbols"]
     interval = config["interval"]
@@ -219,20 +201,37 @@ def main():
     endpoint_ticker = config["api_endpoints"]["binance_ticker"]
     endpoint_trades = config["api_endpoints"]["binance_trades"]
 
-    #Extract and load data for each symbol
+    # Configuration MongoDB
     try:
+        mongodb_client = MongoClient(
+            host=os.getenv("HOST", "localhost").strip(","),
+            port=int(os.getenv("PORT", "27017").strip(",")),
+            username=os.getenv("USERNAME", "").strip(),
+            password=os.getenv("PASSWORD", "").strip()
+        )
+        
+        # Extract data for each symbol
         for symbol in symbols:
-            data_klines = fetch_data_klines(endpoint_klines, symbol, interval, columns_klines, limit)
-            load_data(symbol, data_klines, "klines", columns_klines)
-            
-            #data_trades = fetch_data_trades(endpoint_trades, symbol, columns_trades, limit)
-            #load_data(symbol, data_trades, "trades", columns_trades)
+            try:
+                inserted_count = fetch_data_klines(
+                    mongodb_client,
+                    symbol,
+                    interval,
+                    columns_klines,
+                    limit
+                )
+                print(f"Processed {symbol}: {inserted_count} documents inserted")
 
-            #data_ticker = fetch_data_ticker(endpoint_ticker, symbol)
-            #load_data(symbol, data_ticker, "ticker")
-    
+            except Exception as e:
+                print(f"Error processing {symbol}: {e}")
+                continue
+
     except Exception as e:
-        print("Error occuring:", e) 
-
+        print(f"MongoDB connection error: {e}")
+    
+    finally:
+        if 'mongodb_client' in locals():
+            mongodb_client.close()
+            
 if __name__ == "__main__":
     main()

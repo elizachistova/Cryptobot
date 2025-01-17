@@ -178,18 +178,9 @@ class CryptoAnalyzer:
         return None if delta is None else end_date - delta
 
     def load_data(self, symbol: str, timeframe: str = '1Y') -> pd.DataFrame:
-        """Charge les données pour un symbol et un timeframe donnés"""
         try:
             logger.info(f"Chargement des données pour {symbol} sur {timeframe}")
             
-            # Vérifier d'abord si le symbole existe
-            count = self.db.market_data.count_documents({"symbol": symbol})
-            logger.info(f"Nombre total de documents pour {symbol}: {count}")
-            
-            if count == 0:
-                logger.error(f"Aucune donnée trouvée pour le symbole {symbol}")
-                return pd.DataFrame()
-                
             # Obtenir la dernière date disponible
             latest_record = self.db.market_data.find_one(
                 {"symbol": symbol},
@@ -202,17 +193,7 @@ class CryptoAnalyzer:
             logger.info(f"Dernière date disponible: {end_date}")
             
             # Calculer la date de début en fonction du timeframe
-            timeframe_mapping = {
-                '1D': timedelta(days=1),
-                '7D': timedelta(days=7),
-                '1M': timedelta(days=30),
-                '3M': timedelta(days=90),
-                '6M': timedelta(days=180),
-                '1Y': timedelta(days=365),
-                'ALL': None
-            }
-            
-            delta = timeframe_mapping.get(timeframe, timedelta(days=1))
+            delta = self.get_timeframe_delta(timeframe)
             start_date = end_date - delta if delta else None
             
             # Construire la requête MongoDB
@@ -229,28 +210,39 @@ class CryptoAnalyzer:
             cursor = self.db.market_data.find(
                 query,
                 {
-                    "openTime": 1, "open": 1, "high": 1, "low": 1, "close": 1,
-                    "volume": 1, "trend": 1, "volume_price_ratio": 1,
-                    "BB_UPPER": 1, "BB_LOWER": 1, "RSI": 1,
-                    "DOJI": 1, "HAMMER": 1, "SHOOTING_STAR": 1,
-                    "_id": 0
+                    "_id": 0,
+                    "symbol": 1,
+                    "openTime": 1,
+                    "open": 1,
+                    "high": 1,
+                    "low": 1,
+                    "close": 1,
+                    "volume": 1,
+                    "trend": 1,
+                    "volume_price_ratio": 1,
+                    "indicator": 1
                 }
             ).sort("openTime", 1)
             
-            # Conversion en DataFrame
             documents = list(cursor)
             logger.info(f"Nombre de documents récupérés: {len(documents)}")
             
             if not documents:
                 return pd.DataFrame()
                 
+            # Transformation des documents en DataFrame
             df = pd.DataFrame(documents)
+            
+            # Extraction des indicateurs
+            if 'indicator' in df.columns:
+                indicators = pd.json_normalize(df['indicator'])
+                df = pd.concat([df.drop('indicator', axis=1), indicators], axis=1)
             
             # Conversion des types
             df['openTime'] = pd.to_datetime(df['openTime'])
             numeric_cols = ['open', 'high', 'low', 'close', 'volume',
-                        'trend', 'volume_price_ratio', 'BB_UPPER', 
-                        'BB_LOWER', 'RSI', 'DOJI', 'HAMMER', 'SHOOTING_STAR']
+                        'trend', 'volume_price_ratio', 'BB_MA', 
+                        'BB_UPPER', 'BB_LOWER', 'RSI']
             
             for col in numeric_cols:
                 if col in df.columns:
@@ -263,6 +255,19 @@ class CryptoAnalyzer:
             logger.error(f"Erreur lors du chargement des données: {e}")
             raise
 
+    def get_timeframe_delta(self, timeframe: str) -> timedelta:
+        """Helper pour convertir le timeframe en timedelta"""
+        timeframe_mapping = {
+            '1D': timedelta(days=1),
+            '7D': timedelta(days=7),
+            '1M': timedelta(days=30),
+            '3M': timedelta(days=90),
+            '6M': timedelta(days=180),
+            '1Y': timedelta(days=365),
+            'ALL': None
+        }
+        return timeframe_mapping.get(timeframe, timedelta(days=1))
+    
     def calculate_24h_stats(self, df: pd.DataFrame) -> dict:
         """Calcule les statistiques sur 24h"""
         try:

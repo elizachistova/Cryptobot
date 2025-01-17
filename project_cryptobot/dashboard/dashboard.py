@@ -5,26 +5,40 @@ from datetime import datetime
 from crypto_analysis import CryptoAnalyzer
 import logging
 import os
+from dotenv import load_dotenv
 
 # Configuration du logging
 logging.basicConfig(level=logging.INFO,
                    format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Load environment variables
+dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
+load_dotenv(dotenv_path)
+
+# Configuration MongoDB avec gestion d'erreur
+try:
+    MONGODB_URI = (
+        f"mongodb://{os.getenv('USERNAME')}:{os.getenv('PASSWORD')}"
+        f"@mongodb:27017/Cryptobot?authSource=admin"
+    )
+    # Initialisation de l'analyseur
+    analyzer = CryptoAnalyzer(mongodb_uri=MONGODB_URI)
+    logger.info("Connexion MongoDB établie avec succès")
+except Exception as e:
+    logger.error(f"Erreur de configuration MongoDB: {e}")
+    analyzer = None
+
 app = Flask(__name__)
-MONGODB_URI = "mongodb://CryptoBot:bot123@mongodb:27017/Cryptobot?authSource=admin"
-
-# Définition du chemin vers les données de prédiction
-# Le dashboard.py est dans /dashboard, donc on remonte de deux niveaux pour atteindre /data
-DATA_PREDICTED_DIR = os.path.join(os.path.dirname(__file__), '../../data/data_predicted')
-
-# Initialisation de l'analyseur
-analyzer = CryptoAnalyzer(mongodb_uri=MONGODB_URI)
+DATA_PREDICTED_DIR = os.path.join(os.path.dirname(__file__), '../data/data_predicted')
 
 @app.route('/')
 def index():
     """Route principale"""
     try:
+        if not analyzer:
+            raise Exception("Analyseur non initialisé - Problème de connexion MongoDB")
+            
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return render_template('index.html', 
                              symbols=analyzer.available_symbols,
@@ -37,6 +51,9 @@ def index():
 def get_analysis(symbol):
     """Route d'analyse avec gestion des timeframes"""
     try:
+        if not analyzer:
+            raise Exception("Analyseur non initialisé - Problème de connexion MongoDB")
+            
         timeframe = request.args.get('timeframe', '1D')
         indicators = request.args.getlist('indicators')
         
@@ -49,8 +66,12 @@ def get_analysis(symbol):
         
         if not results:
             logger.error(f"Aucune donnée trouvée pour {symbol}")
-            return jsonify({"error": "No data available"}), 400
-        
+            return jsonify({"error": "No data available"}), 404
+            
+        if 'technical_chart' not in results:
+            logger.error(f"Données techniques manquantes pour {symbol}")
+            return jsonify({"error": "Technical data not available"}), 500
+            
         return jsonify(results)
     
     except Exception as e:
@@ -61,33 +82,10 @@ def get_analysis(symbol):
 def get_prediction_data(filename):
     """Route pour servir les fichiers de prédiction"""
     try:
-        logger.info(f"Demande de fichier de prédiction: {filename}")
-        logger.info(f"Chemin recherché: {os.path.join(DATA_PREDICTED_DIR, filename)}")
-        
-        # Vérifier que le fichier existe
-        if not os.path.exists(os.path.join(DATA_PREDICTED_DIR, filename)):
-            logger.error(f"Fichier de prédiction non trouvé: {filename}")
-            return jsonify({"error": "Prediction file not found"}), 404
-            
         return send_from_directory(DATA_PREDICTED_DIR, filename)
     except Exception as e:
         logger.error(f"Erreur lors de l'accès au fichier de prédiction {filename}: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
-@app.before_first_request
-def setup_folders():
-    """Vérifie et crée les dossiers nécessaires au démarrage"""
-    try:
-        logger.info(f"Vérification du dossier des prédictions: {DATA_PREDICTED_DIR}")
-        if not os.path.exists(DATA_PREDICTED_DIR):
-            os.makedirs(DATA_PREDICTED_DIR, exist_ok=True)
-            logger.warning(f"Création du dossier des prédictions: {DATA_PREDICTED_DIR}")
-        
-        # Liste les fichiers existants
-        prediction_files = os.listdir(DATA_PREDICTED_DIR)
-        logger.info(f"Fichiers de prédiction disponibles: {prediction_files}")
-    except Exception as e:
-        logger.error(f"Erreur lors de la configuration des dossiers: {str(e)}")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

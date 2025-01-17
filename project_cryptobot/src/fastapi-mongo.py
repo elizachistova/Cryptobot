@@ -106,16 +106,24 @@ async def create_market_data(data: MarketData):
 # Retrieve all data 
 @app.get("/market_data", response_model=List[dict])
 async def get_all_market_data():
-    documents = await db.market_data.find().to_list(100)
-    return [document_to_dict(doc) for doc in documents]
+    try:
+        # Récupérer les 100 derniers documents triés par date
+        cursor = db.market_data.find().sort("openTime", -1).limit(100)
+        documents = await cursor.to_list(length=100)
+        return [document_to_dict(doc) for doc in documents]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Retrieve data with matching Id
 @app.get("/market_data/{item_id}", response_model=dict)
 async def get_market_data_by_id(item_id: str):
-    document = await db.market_data.find_one({"_id": ObjectId(item_id)})
-    if not document:
-        raise HTTPException(status_code=404, detail="Market data not found")
-    return document_to_dict(document)
+    try:
+        document = await db.market_data.find_one({"_id": ObjectId(item_id)})
+        if not document:
+            raise HTTPException(status_code=404, detail="Market data not found")
+        return document_to_dict(document)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Update data with matching Id
 @app.put("/market_data/{item_id}", response_model=dict)
