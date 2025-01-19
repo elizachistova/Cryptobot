@@ -25,6 +25,16 @@ services:
       - "27017:27017"
     volumes:
       - ../src/initdb.d:/docker-entrypoint-initdb.d 
+      - mongodb_data:/data/db 
+    command: mongod --auth
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
   
   #flask:
    # build:
@@ -106,7 +116,8 @@ services:
       volumes:
         - ..:/app
       depends_on:
-        - mongodb
+        mongodb:
+          condition: service_healthy
       environment:
         - MONGODB_URI=mongodb://CryptoBot:bot123@mongodb:27017/Cryptobot?authSource=admin
         - PYTHONPATH=/app
@@ -114,7 +125,7 @@ services:
         - FLASK_ENV=development
         - FLASK_DEBUG=1
       working_dir: /app/dashboard
-      command: python -m flask run --host=0.0.0.0 --port=5000
+      command: bash -c "python update_data.py && python -m flask run --host=0.0.0.0 --port=5000"
       restart: unless-stopped
 
 volumes:

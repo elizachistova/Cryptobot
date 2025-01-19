@@ -36,6 +36,16 @@ def fetch_data_klines(mongodb_client, symbol, interval, columns, limit, endpoint
         start_date: Date de début (optionnel)
         end_date: Date de fin (optionnel)
     """
+
+    raw_market_data = mongodb_client.Cryptobot.raw_market_data
+    
+    last_document = raw_market_data.find_one(
+        {"symbol": symbol}, 
+        sort=[("openTime", -1)]
+    )
+    
+    if last_document:
+        start_date = last_document['openTime'] + timedelta(minutes=1)        
     if end_date is None:
         end_date = datetime.now()
     if start_date is None:
@@ -53,7 +63,6 @@ def fetch_data_klines(mongodb_client, symbol, interval, columns, limit, endpoint
         'endTime': end_timestamp
     }
 
-    raw_market_data = mongodb_client.Cryptobot.raw_market_data
     
     while True:
         response = requests.get(endpoint_klines, params=params)

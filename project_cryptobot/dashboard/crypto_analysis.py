@@ -144,6 +144,13 @@ class CryptoAnalyzer:
             self.db = self.client.Cryptobot
             logger.info(f"Connexion à MongoDB établie avec succès")
             self.init_symbols()
+            collections = self.db.list_collection_names()
+            logger.info(f"Collections disponibles: {collections}")
+
+            count = self.db.market_data.count_documents({})
+            logger.info(f"Nombre de documents dans market_data: {count}")
+
+
         except Exception as e:
             logger.error(f"Erreur de connexion à MongoDB: {e}")
             raise
@@ -151,9 +158,18 @@ class CryptoAnalyzer:
     def init_symbols(self):
         """Initialise la liste des symboles disponibles"""
         try:
+
+            collections = self.db.list_collection_names()
+            logger.info(f"Collections disponibles: {collections}")
+
+            count = self.db.market_data.count_documents({})
+            logger.info(f"Nombre de documents dans market_data: {count}")
+
+
             self.available_symbols = self.db.market_data.distinct("symbol")
             logger.info(f"Symboles disponibles: {self.available_symbols}")
             return self.available_symbols
+            
         except Exception as e:
             logger.error(f"Erreur lors de la récupération des symboles: {e}")
             return []
