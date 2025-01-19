@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 
 
-def load_config(CONFIG_DIR='/app/code/config/config.json'):
+def load_config(CONFIG_DIR='/app/config/config.json'):
     """
     Loads the configuration json file.
     
@@ -23,7 +23,7 @@ def load_config(CONFIG_DIR='/app/code/config/config.json'):
         raise FileNotFoundError(f"Configuration file not found at {CONFIG_DIR}")
     
     
-def fetch_data_klines(mongodb_client, symbol, interval, columns, limit, start_date=None, end_date=None):
+def fetch_data_klines(mongodb_client, symbol, interval, columns, limit, endpoint_klines, start_date=None, end_date=None):
     """
     Récupère les données klines et les insère directement dans raw_market_data
     
@@ -39,8 +39,8 @@ def fetch_data_klines(mongodb_client, symbol, interval, columns, limit, start_da
     if end_date is None:
         end_date = datetime.now()
     if start_date is None:
-        # On ne prend que 7 jours de données
-        start_date = end_date - timedelta(days=7)
+        # On ne prend que 2 ans de donneés
+        start_date = end_date - timedelta(days=730)
 
     end_timestamp = int(end_date.timestamp() * 1000)
     start_timestamp = int(start_date.timestamp() * 1000)
@@ -204,7 +204,7 @@ def main():
     # Configuration MongoDB
     try:
         mongodb_client = MongoClient(
-            host=os.getenv("HOST", "localhost").strip(","),
+            host="mongodb",
             port=int(os.getenv("PORT", "27017").strip(",")),
             username=os.getenv("USERNAME", "").strip(),
             password=os.getenv("PASSWORD", "").strip()
@@ -218,7 +218,8 @@ def main():
                     symbol,
                     interval,
                     columns_klines,
-                    limit
+                    limit,
+                    endpoint_klines
                 )
                 print(f"Processed {symbol}: {inserted_count} documents inserted")
 

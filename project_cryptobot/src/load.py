@@ -116,7 +116,7 @@ def main():
     dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
     load_dotenv(dotenv_path)
     
-    host = os.getenv("HOST", "localhost").strip(",")  # Remove any trailing commas
+    host = "mongodb"  # Remove any trailing commas
     port = os.getenv("PORT", "27017").strip(",")  # Remove any trailing commas
     username = os.getenv("USERNAME", "").strip()
     password = os.getenv("PASSWORD", "").strip()

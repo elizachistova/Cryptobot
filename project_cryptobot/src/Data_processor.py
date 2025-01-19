@@ -13,7 +13,7 @@ class MongoDataHandler:
         
         # Connexion MongoDB
         self.client = MongoClient(
-            host=os.getenv("HOST", "localhost").strip(","),
+            host="mongodb",
             port=int(os.getenv("PORT", "27017").strip(",")),
             username=os.getenv("USERNAME", "").strip(),
             password=os.getenv("PASSWORD", "").strip()
