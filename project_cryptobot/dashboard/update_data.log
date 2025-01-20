@@ -1,0 +1,320 @@
+2025-01-20 08:23:12,869 - INFO - Début de la mise à jour des données
+2025-01-20 08:23:12,869 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 08:23:12,870 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 08:23:12,897 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 08:23:12,897 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 08:23:12,897 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 08:23:12,897 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 08:23:12,897 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 08:23:12,924 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 08:23:12,925 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 08:23:12,925 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 08:23:12,925 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 08:23:12,925 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 08:23:12,954 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 08:23:12,954 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 08:23:12,954 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 08:23:12,955 - INFO - Mise à jour terminée. Durée totale : 0:00:00.085214
+2025-01-20 08:42:24,571 - INFO - Début de la mise à jour des données
+2025-01-20 08:42:24,572 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 08:42:24,572 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 08:42:24,744 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 08:42:24,744 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 08:42:24,744 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 08:42:24,745 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 08:42:24,745 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 08:42:24,871 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 08:42:24,872 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 08:42:24,872 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 08:42:24,872 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 08:42:24,873 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 08:42:24,948 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 08:42:24,948 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 08:42:24,948 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 08:42:24,949 - INFO - Mise à jour terminée. Durée totale : 0:00:00.377847
+2025-01-20 08:45:19,033 - INFO - Début de la mise à jour des données
+2025-01-20 08:45:19,036 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 08:45:19,038 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 08:45:19,581 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 08:45:19,610 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 08:45:19,614 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 08:45:19,618 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 08:45:19,620 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 08:45:20,108 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 08:45:20,115 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 08:45:20,126 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 08:45:20,139 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 08:45:20,139 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 08:45:20,620 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 08:45:20,656 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 08:45:20,658 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 08:45:20,660 - INFO - Mise à jour terminée. Durée totale : 0:00:01.626045
+2025-01-20 08:57:07,824 - INFO - Début de la mise à jour des données
+2025-01-20 08:57:07,830 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 08:57:07,831 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 08:57:08,389 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 08:57:08,395 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 08:57:08,396 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 08:57:08,397 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 08:57:08,397 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 08:57:08,940 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 08:57:08,944 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 08:57:08,948 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 08:57:08,952 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 08:57:08,954 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 08:57:09,374 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 08:57:09,378 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 08:57:09,379 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 08:57:09,389 - INFO - Mise à jour terminée. Durée totale : 0:00:01.558302
+2025-01-20 09:01:12,134 - INFO - Début de la mise à jour des données
+2025-01-20 09:01:12,142 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 09:01:12,143 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 09:01:12,708 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 09:01:12,721 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 09:01:12,722 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 09:01:12,724 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 09:01:12,724 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 09:01:13,183 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 09:01:13,193 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 09:01:13,194 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 09:01:13,195 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 09:01:13,197 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 09:01:13,641 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 09:01:13,642 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 09:01:13,644 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 09:01:13,646 - INFO - Mise à jour terminée. Durée totale : 0:00:01.511610
+2025-01-20 09:04:52,784 - INFO - Début de la mise à jour des données
+2025-01-20 09:04:52,790 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 09:04:52,800 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 09:04:53,198 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 09:04:53,229 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 09:04:53,241 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 09:04:53,248 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 09:04:53,248 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 09:04:53,861 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 09:04:53,870 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 09:04:53,873 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 09:04:53,880 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 09:04:53,882 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 09:04:54,412 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 09:04:54,424 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 09:04:54,425 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 09:04:54,428 - INFO - Mise à jour terminée. Durée totale : 0:00:01.642435
+2025-01-20 09:11:39,096 - INFO - Début de la mise à jour des données
+2025-01-20 09:11:39,102 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 09:11:39,102 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 09:11:39,324 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 09:11:39,333 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 09:11:39,333 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 09:11:39,333 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 09:11:39,333 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 09:11:39,645 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 09:11:39,658 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 09:11:39,658 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 09:11:39,660 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 09:11:39,664 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 09:11:39,890 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 09:11:39,891 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 09:11:39,891 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 09:11:39,892 - INFO - Mise à jour terminée. Durée totale : 0:00:00.796217
+2025-01-20 09:21:37,063 - INFO - Début de la mise à jour des données
+2025-01-20 09:21:37,067 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 09:21:37,068 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 09:21:37,548 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 09:21:37,563 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 09:21:37,564 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 09:21:37,567 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 09:21:37,571 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 09:21:38,219 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 09:21:38,225 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 09:21:38,231 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 09:21:38,233 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 09:21:38,233 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 09:21:38,468 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 09:21:38,468 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 09:21:38,469 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 09:21:38,470 - INFO - Mise à jour terminée. Durée totale : 0:00:01.406867
+2025-01-20 09:39:56,342 - INFO - Début de la mise à jour des données
+2025-01-20 09:39:56,351 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 09:39:56,352 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 09:39:56,677 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 09:39:56,680 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 09:39:56,683 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 09:39:56,687 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 09:39:56,695 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 09:39:57,055 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 09:39:57,060 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 09:39:57,060 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 09:39:57,060 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 09:39:57,061 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 09:39:57,440 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 09:39:57,443 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 09:39:57,444 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 09:39:57,446 - INFO - Mise à jour terminée. Durée totale : 0:00:01.108242
+2025-01-20 09:48:35,839 - INFO - Début de la mise à jour des données
+2025-01-20 09:48:35,847 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 09:48:35,849 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 09:48:36,388 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 09:48:36,397 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 09:48:36,397 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 09:48:36,399 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 09:48:36,400 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 09:48:36,694 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 09:48:36,699 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 09:48:36,700 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 09:48:36,703 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 09:48:36,704 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 09:48:37,265 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 09:48:37,269 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 09:48:37,272 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 09:48:37,289 - INFO - Mise à jour terminée. Durée totale : 0:00:01.440298
+2025-01-20 09:51:11,212 - INFO - Début de la mise à jour des données
+2025-01-20 09:51:11,216 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 09:51:11,217 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 09:51:11,696 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 09:51:11,707 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 09:51:11,710 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 09:51:11,713 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 09:51:11,715 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 09:51:12,285 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 09:51:12,300 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 09:51:12,301 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 09:51:12,306 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 09:51:12,310 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 09:51:12,779 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 09:51:12,792 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 09:51:12,798 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 09:51:12,800 - INFO - Mise à jour terminée. Durée totale : 0:00:01.587551
+2025-01-20 10:14:00,043 - INFO - Début de la mise à jour des données
+2025-01-20 10:14:00,066 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 10:14:00,074 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 10:14:00,785 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 10:14:00,817 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 10:14:00,879 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 10:14:00,883 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 10:14:00,915 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 10:14:01,659 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 10:14:01,691 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 10:14:01,697 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 10:14:01,705 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 10:14:01,710 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 10:14:02,278 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 10:14:02,292 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 10:14:02,292 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 10:14:02,294 - INFO - Mise à jour terminée. Durée totale : 0:00:02.250470
+2025-01-20 12:01:17,344 - INFO - Début de la mise à jour des données
+2025-01-20 12:01:17,345 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 12:01:17,351 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 12:01:17,426 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 12:01:17,426 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 12:01:17,427 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 12:01:17,427 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 12:01:17,427 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 12:01:17,451 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 12:01:17,452 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 12:01:17,452 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 12:01:17,452 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 12:01:17,452 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 12:01:17,478 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 12:01:17,478 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 12:01:17,479 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 12:01:17,479 - INFO - Mise à jour terminée. Durée totale : 0:00:00.135076
+2025-01-20 12:13:48,352 - INFO - Début de la mise à jour des données
+2025-01-20 12:13:48,352 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 12:13:48,352 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 12:13:48,435 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 12:13:48,436 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 12:13:48,436 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 12:13:48,436 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 12:13:48,437 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 12:13:48,492 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 12:13:48,493 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 12:13:48,493 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 12:13:48,493 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 12:13:48,493 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 12:13:48,594 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 12:13:48,595 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 12:13:48,597 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 12:13:48,599 - INFO - Mise à jour terminée. Durée totale : 0:00:00.247750
+2025-01-20 12:17:02,261 - INFO - Début de la mise à jour des données
+2025-01-20 12:17:02,264 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 12:17:02,267 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 12:17:02,445 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 12:17:02,446 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 12:17:02,446 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 12:17:02,447 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 12:17:02,447 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 12:17:02,585 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 12:17:02,585 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 12:17:02,586 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 12:17:02,586 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 12:17:02,586 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 12:17:02,661 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 12:17:02,661 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 12:17:02,662 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 12:17:02,663 - INFO - Mise à jour terminée. Durée totale : 0:00:00.401167
+2025-01-20 12:22:21,189 - INFO - Début de la mise à jour des données
+2025-01-20 12:22:21,190 - INFO - Exécution de /app/dashboard/../extract.py
+2025-01-20 12:22:21,190 - INFO - Exécution de la commande : python /app/dashboard/../extract.py
+2025-01-20 12:22:21,231 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../extract.py
+2025-01-20 12:22:21,231 - ERROR - python: can't open file '/app/dashboard/../extract.py': [Errno 2] No such file or directory
+
+2025-01-20 12:22:21,231 - ERROR - Échec de l'exécution de /app/dashboard/../extract.py: Command 'python /app/dashboard/../extract.py' returned non-zero exit status 2.
+2025-01-20 12:22:21,231 - INFO - Exécution de /app/dashboard/../Data_processor.py
+2025-01-20 12:22:21,231 - INFO - Exécution de la commande : python /app/dashboard/../Data_processor.py
+2025-01-20 12:22:21,264 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../Data_processor.py
+2025-01-20 12:22:21,265 - ERROR - python: can't open file '/app/dashboard/../Data_processor.py': [Errno 2] No such file or directory
+
+2025-01-20 12:22:21,265 - ERROR - Échec de l'exécution de /app/dashboard/../Data_processor.py: Command 'python /app/dashboard/../Data_processor.py' returned non-zero exit status 2.
+2025-01-20 12:22:21,265 - INFO - Exécution de /app/dashboard/../load.py
+2025-01-20 12:22:21,265 - INFO - Exécution de la commande : python /app/dashboard/../load.py
+2025-01-20 12:22:21,296 - ERROR - Erreur lors de l'exécution de python /app/dashboard/../load.py
+2025-01-20 12:22:21,296 - ERROR - python: can't open file '/app/dashboard/../load.py': [Errno 2] No such file or directory
+
+2025-01-20 12:22:21,296 - ERROR - Échec de l'exécution de /app/dashboard/../load.py: Command 'python /app/dashboard/../load.py' returned non-zero exit status 2.
+2025-01-20 12:22:21,296 - INFO - Mise à jour terminée. Durée totale : 0:00:00.107020

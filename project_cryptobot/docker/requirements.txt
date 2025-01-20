@@ -5,16 +5,22 @@ pymongo==4.9.2
 requests==2.31.0
 
 # Data processing & ML
-numpy==1.23.5
+#numpy==1.23.5
+numpy==1.26.4
 pandas==2.1.4
-scikit-learn==1.3.0
-tensorflow==2.12.0  
-keras==2.12.0       
+#scikit-learn==1.3.0
+scikit-learn==1.4.0
+#tensorflow==2.12.0  
+tensorflow==2.16.1
+#keras==2.12.0
+keras==3.0.0       
 keras-tuner==1.3.5 
-h5py==3.8.0
+#h5py==3.8.0
+h5py==3.10.0
 
 # Visualization & Dashboard
-flask==2.3.3
+#flask==2.3.3
+flask == 2.2.2
 plotly==5.18.0
 matplotlib==3.6.3
 
@@ -23,7 +29,6 @@ python-dateutil==2.8.2
 python-dotenv==1.0.0
 joblib==1.3.2
 load-dotenv==0.1.0
-
 jupyterlab==4.0.11  
 flask-cors==4.0.0
 gunicorn==21.2.0

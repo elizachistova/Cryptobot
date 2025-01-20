@@ -1,0 +1,101 @@
+[2025-01-20T08:31:41.410+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-01-20T08:31:41.467+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cryptobot_workflow.fetch_data manual__2025-01-20T08:31:34.680007+00:00 [queued]>
+[2025-01-20T08:31:41.495+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cryptobot_workflow.fetch_data manual__2025-01-20T08:31:34.680007+00:00 [queued]>
+[2025-01-20T08:31:41.497+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2025-01-20T08:31:41.533+0000] {taskinstance.py:2889} INFO - Executing <Task(BashOperator): fetch_data> on 2025-01-20 08:31:34.680007+00:00
+[2025-01-20T08:31:41.552+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=176) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-01-20T08:31:41.561+0000] {standard_task_runner.py:72} INFO - Started process 178 to run task
+[2025-01-20T08:31:41.574+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'cryptobot_workflow', 'fetch_data', 'manual__2025-01-20T08:31:34.680007+00:00', '--job-id', '25', '--raw', '--subdir', 'DAGS_FOLDER/cryptobot_dag.py', '--cfg-path', '/tmp/tmpoljwzweu']
+[2025-01-20T08:31:41.578+0000] {standard_task_runner.py:105} INFO - Job 25: Subtask fetch_data
+[2025-01-20T08:31:45.845+0000] {task_command.py:467} INFO - Running <TaskInstance: cryptobot_workflow.fetch_data manual__2025-01-20T08:31:34.680007+00:00 [running]> on host 03c752f9c1ed
+[2025-01-20T08:31:46.239+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cryptobot_workflow' AIRFLOW_CTX_TASK_ID='fetch_data' AIRFLOW_CTX_EXECUTION_DATE='2025-01-20T08:31:34.680007+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-01-20T08:31:34.680007+00:00'
+[2025-01-20T08:31:46.245+0000] {logging_mixin.py:190} INFO - Task instance is in running state
+[2025-01-20T08:31:46.246+0000] {logging_mixin.py:190} INFO -  Previous state of the Task instance: queued
+[2025-01-20T08:31:46.247+0000] {logging_mixin.py:190} INFO - Current task name:fetch_data state:running start_date:2025-01-20 08:31:41.469248+00:00
+[2025-01-20T08:31:46.248+0000] {logging_mixin.py:190} INFO - Dag name:cryptobot_workflow and current dag run status:running
+[2025-01-20T08:31:46.249+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-01-20T08:31:46.255+0000] {subprocess.py:78} INFO - Tmp dir root location: /tmp
+[2025-01-20T08:31:46.260+0000] {subprocess.py:88} INFO - Running command: ['/usr/bin/bash', '-c', 'python /opt/***/src/extract.py']
+[2025-01-20T08:31:46.310+0000] {subprocess.py:99} INFO - Output:
+[2025-01-20T08:31:48.220+0000] {subprocess.py:106} INFO - Traceback (most recent call last):
+[2025-01-20T08:31:48.246+0000] {subprocess.py:106} INFO -   File "/opt/***/src/extract.py", line 6, in <module>
+[2025-01-20T08:31:48.252+0000] {subprocess.py:106} INFO -     from pymongo import MongoClient
+[2025-01-20T08:31:48.255+0000] {subprocess.py:106} INFO - ModuleNotFoundError: No module named 'pymongo'
+[2025-01-20T08:31:48.388+0000] {subprocess.py:110} INFO - Command exited with return code 1
+[2025-01-20T08:31:48.594+0000] {taskinstance.py:3311} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 422, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 276, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2025-01-20T08:31:48.644+0000] {logging_mixin.py:190} INFO - Task instance in failure state
+[2025-01-20T08:31:48.653+0000] {logging_mixin.py:190} INFO - Task start:2025-01-20 08:31:41.469248+00:00 end:2025-01-20 08:31:48.636974+00:00 duration:7.167726
+[2025-01-20T08:31:48.661+0000] {logging_mixin.py:190} INFO - Task:<Task(BashOperator): fetch_data> dag:<DAG: cryptobot_workflow> dagrun:<DagRun cryptobot_workflow @ 2025-01-20 08:31:34.680007+00:00: manual__2025-01-20T08:31:34.680007+00:00, state:running, queued_at: 2025-01-20 08:31:34.775017+00:00. externally triggered: True>
+[2025-01-20T08:31:48.672+0000] {logging_mixin.py:190} INFO - Failure caused by Bash command failed. The command returned a non-zero exit code 1.
+[2025-01-20T08:31:48.676+0000] {taskinstance.py:1225} INFO - Marking task as FAILED. dag_id=cryptobot_workflow, task_id=fetch_data, run_id=manual__2025-01-20T08:31:34.680007+00:00, execution_date=20250120T083134, start_date=20250120T083141, end_date=20250120T083148
+[2025-01-20T08:31:48.763+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-01-20T08:31:48.768+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 25 for task fetch_data (Bash command failed. The command returned a non-zero exit code 1.; 178)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3005, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3159, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3183, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 422, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 276, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2025-01-20T08:31:49.994+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-01-20T08:31:50.070+0000] {taskinstance.py:3895} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-01-20T08:31:50.089+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

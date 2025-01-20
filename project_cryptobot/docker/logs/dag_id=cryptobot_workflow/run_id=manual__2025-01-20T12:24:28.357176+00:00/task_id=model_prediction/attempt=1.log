@@ -1,0 +1,31 @@
+[2025-01-20T12:25:18.097+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-01-20T12:25:18.110+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cryptobot_workflow.model_prediction manual__2025-01-20T12:24:28.357176+00:00 [queued]>
+[2025-01-20T12:25:18.114+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cryptobot_workflow.model_prediction manual__2025-01-20T12:24:28.357176+00:00 [queued]>
+[2025-01-20T12:25:18.114+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2025-01-20T12:25:18.120+0000] {taskinstance.py:2889} INFO - Executing <Task(BashOperator): model_prediction> on 2025-01-20 12:24:28.357176+00:00
+[2025-01-20T12:25:18.130+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=125) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-01-20T12:25:18.131+0000] {standard_task_runner.py:72} INFO - Started process 126 to run task
+[2025-01-20T12:25:18.132+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'cryptobot_workflow', 'model_prediction', 'manual__2025-01-20T12:24:28.357176+00:00', '--job-id', '90', '--raw', '--subdir', 'DAGS_FOLDER/cryptobot_dag.py', '--cfg-path', '/tmp/tmp34p6nyki']
+[2025-01-20T12:25:18.133+0000] {standard_task_runner.py:105} INFO - Job 90: Subtask model_prediction
+[2025-01-20T12:25:18.165+0000] {task_command.py:467} INFO - Running <TaskInstance: cryptobot_workflow.model_prediction manual__2025-01-20T12:24:28.357176+00:00 [running]> on host fd5a16ffbc98
+[2025-01-20T12:25:18.208+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cryptobot_workflow' AIRFLOW_CTX_TASK_ID='model_prediction' AIRFLOW_CTX_EXECUTION_DATE='2025-01-20T12:24:28.357176+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-01-20T12:24:28.357176+00:00'
+[2025-01-20T12:25:18.209+0000] {logging_mixin.py:190} INFO - Task instance is in running state
+[2025-01-20T12:25:18.209+0000] {logging_mixin.py:190} INFO -  Previous state of the Task instance: queued
+[2025-01-20T12:25:18.209+0000] {logging_mixin.py:190} INFO - Current task name:model_prediction state:running start_date:2025-01-20 12:25:18.110598+00:00
+[2025-01-20T12:25:18.209+0000] {logging_mixin.py:190} INFO - Dag name:cryptobot_workflow and current dag run status:running
+[2025-01-20T12:25:18.210+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-01-20T12:25:18.210+0000] {subprocess.py:78} INFO - Tmp dir root location: /tmp
+[2025-01-20T12:25:18.210+0000] {subprocess.py:88} INFO - Running command: ['/usr/bin/bash', '-c', 'python /opt/***/src/predictions.py']
+[2025-01-20T12:25:18.218+0000] {subprocess.py:99} INFO - Output:
+[2025-01-20T12:25:25.887+0000] {subprocess.py:110} INFO - Command exited with return code 0
+[2025-01-20T12:25:25.981+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-01-20T12:25:25.984+0000] {taskinstance.py:352} INFO - Marking task as SUCCESS. dag_id=cryptobot_workflow, task_id=model_prediction, run_id=manual__2025-01-20T12:24:28.357176+00:00, execution_date=20250120T122428, start_date=20250120T122518, end_date=20250120T122525
+[2025-01-20T12:25:26.013+0000] {logging_mixin.py:190} INFO - Task instance in success state
+[2025-01-20T12:25:26.013+0000] {logging_mixin.py:190} INFO -  Previous state of the Task instance: running
+[2025-01-20T12:25:26.014+0000] {logging_mixin.py:190} INFO - Dag name:cryptobot_workflow queued_at:2025-01-20 12:24:28.407575+00:00
+[2025-01-20T12:25:26.014+0000] {logging_mixin.py:190} INFO - Task hostname:fd5a16ffbc98 operator:BashOperator
+[2025-01-20T12:25:26.041+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-01-20T12:25:26.082+0000] {taskinstance.py:3895} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-01-20T12:25:26.083+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

@@ -7,7 +7,22 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 
 
-def load_config(CONFIG_DIR='/app/config/config.json'):
+#def load_config(CONFIG_DIR='/app/config/config.json'):
+   # """
+   #  Loads the configuration json file.
+   # 
+   # Returns: 
+   # -------
+   # Configuration files as a dictionary.
+   # """
+   # try:
+   #     with open(CONFIG_DIR, 'r') as file:
+   #         return json.load(file)
+   #     
+   # except FileNotFoundError:
+   #     raise FileNotFoundError(f"Configuration file not found at {CONFIG_DIR}")
+    
+def load_config():
     """
     Loads the configuration json file.
     
@@ -15,13 +30,16 @@ def load_config(CONFIG_DIR='/app/config/config.json'):
     -------
     Configuration files as a dictionary.
     """
+    #config_path = os.getenv('CONFIG_DIR', '/opt/airflow/config/config.json')
+    #config_path = os.path.join(os.path.dirname(__file__), '../config/config.json')
+    config_path = '/opt/airflow/config/config.json'
+
     try:
-        with open(CONFIG_DIR, 'r') as file:
+        with open(config_path, 'r') as file:
             return json.load(file)
         
     except FileNotFoundError:
-        raise FileNotFoundError(f"Configuration file not found at {CONFIG_DIR}")
-    
+        raise FileNotFoundError(f"Configuration file not found at {config_path}")
     
 def fetch_data_klines(mongodb_client, symbol, interval, columns, limit, endpoint_klines, start_date=None, end_date=None):
     """
