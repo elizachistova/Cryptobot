@@ -14,7 +14,6 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 
 
-DATA_PREDICTED_DIR = os.path.join(os.path.dirname(__file__), '../data/data_predicted')
 MODEL_DIR = os.path.join(os.path.dirname(__file__), '../models')
 CONFIG_DIR = os.path.join(os.path.dirname(__file__), '../config/config.json')
 dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')

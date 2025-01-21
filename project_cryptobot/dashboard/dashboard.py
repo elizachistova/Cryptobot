@@ -19,12 +19,13 @@ load_dotenv(dotenv_path)
 # Configuration MongoDB avec gestion d'erreur
 try:
     MONGODB_URI = (
-        f"mongodb://{os.getenv('USERNAME')}:{os.getenv('PASSWORD')}"
-        f"@mongodb:27017/Cryptobot?authSource=admin"
+        f"mongodb://CryptoBot:bot123@127.0.0.1:27017/Cryptobot?"
     )
+
     # Initialisation de l'analyseur
     analyzer = CryptoAnalyzer(mongodb_uri=MONGODB_URI)
     logger.info("Connexion MongoDB établie avec succès")
+    
 except Exception as e:
     logger.error(f"Erreur de configuration MongoDB: {e}")
     analyzer = None

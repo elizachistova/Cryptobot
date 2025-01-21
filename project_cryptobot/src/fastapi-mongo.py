@@ -1,12 +1,14 @@
 import os
 import json
 from datetime import datetime
-from typing import List, Optional
+from typing import Counter, List, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
 from models import MarketData, UpdateMarketData,PredictionRequest
 from predictions import load_data, load_scalers, make_pred 
+from prometheus_client import Counter, REGISTRY, generate_latest, CollectorRegistry, multiprocess
+from prometheus_fastapi_instrumentator import Instrumentator
 from bson import ObjectId
 from dotenv import load_dotenv
 from contextlib import asynccontextmanager
@@ -16,9 +18,28 @@ from tensorflow.keras.models import load_model
 # Load environment variables
 dotenv_path = os.path.join(os.path.dirname(__file__), '../config/.env')
 load_dotenv(dotenv_path)
+FASTAPI_ENV = os.getenv("FASTAPI_ENV", "development")
+print("FASTAPI_ENV =", FASTAPI_ENV)
+
+
+
+if FASTAPI_ENV == "development" and "prediction_requests" in REGISTRY._names_to_collectors:
+    print("Métrique déjà définie, utilisation de l'existante.")
+    prediction_counter = REGISTRY._names_to_collectors["prediction_requests"]
+else:
+    print("Définition d'une nouvelle métrique.")
+    prediction_counter = Counter(
+        "prediction_requests",
+        "Count of prediction requests",
+        ["symbol"]
+    )
+
+
+
 
 # Define model directory
 MODEL_DIR = os.getenv("MODEL_DIR", "../models")
+
 
 # MongoDB Configuration
 MONGO_DETAILS = {
@@ -36,6 +57,7 @@ client = AsyncIOMotorClient(
     password=MONGO_DETAILS["password"],
 )
 db = client["Cryptobot"]
+
 # Helper to convert MongoDB ObjectId
 def document_to_dict(doc):
     doc["_id"] = str(doc["_id"])
@@ -43,6 +65,14 @@ def document_to_dict(doc):
 
 # Create collection if not exists
 async def create_collection(db, collection_name, validator=None):
+    """
+    Create a MongoDB collection if it does not exist.
+
+    Args:
+        db: The database instance.
+        collection_name: The name of the collection to create.
+        validator: Optional validator for the collection schema.
+    """
     if collection_name not in await db.list_collection_names():
         print(f"Creating collection: {collection_name}")
         if validator:
@@ -64,8 +94,6 @@ async def insert_data_to_mongo(db, collection_name, data):
             print(f"Data insertion failed into {collection_name}: {e}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during data insertion into {collection_name}: {e}")
-
-# Lifespan context manager
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Connecting to MongoDB...")
@@ -86,6 +114,11 @@ async def lifespan(app: FastAPI):
 
 # FastAPI App
 app = FastAPI(lifespan=lifespan)
+Instrumentator().instrument(app).expose(app)
+
+@app.get("/metrics")
+async def metrics():
+    return JSONResponse(content=generate_latest(REGISTRY))
 
 @app.get("/")
 async def read_root():
@@ -147,14 +180,18 @@ async def delete_market_data(item_id: str):
 
 ## Collection ML Prediction
 async def save_data(symbol, future_pred):
+    # Prediction Counter
+    prediction_counter.labels(symbol).inc()
+    
     # Récupérer les données existantes
     existing_doc = await db.prediction_ml.find_one({"symbol": symbol})
-
+   
     if existing_doc:
         existing_predictions = {pred["timestamp"]: pred["prediction"] for pred in existing_doc["predictions"]}
         unique_predictions = [
             pred for pred in future_pred if pred["timestamp"] not in existing_predictions
         ]
+
         if unique_predictions:
             result = await db.prediction_ml.update_one(
                 {"symbol": symbol},
@@ -170,14 +207,21 @@ async def save_data(symbol, future_pred):
                 'created_at': datetime.utcnow()
             }
         }
+
+        #prediction_counter = Counter("prediction_requests", "Count of prediction requests", ["method", "endpoint"])
+        #prediction_counter.labels("POST", "/predict/").inc()
+        
+        
         result = await db.prediction_ml.insert_one(document)
-    
+
         return result.inserted_id
 
+#prediction_counter = Counter("prediction_requests", "Count of prediction requests", ["symbol"])
 
 @app.post("/predict/")
 async def predict(request: PredictionRequest):
     try:
+
         MODEL_DIR = os.path.join(os.path.dirname(__file__), '../models')
         os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
         symbol = request.symbol
@@ -193,13 +237,18 @@ async def predict(request: PredictionRequest):
         features = ["open", "high", "low", "volume", "trend", "volume_price_ratio", "BB_MA", "BB_UPPER", "BB_LOWER", "RSI"]
         latest_data, last_timestamp = load_data(symbol, features, scaler, model)
         future_pred = make_pred(symbol, model, scaler_y, latest_data, last_timestamp, interval_hours, db)
-
+    
+       
         # Sauvegarder les prédictions dans MongoDB
         saved_id = await save_data(symbol, future_pred)
+        
+
 
         return {"symbol": symbol, "predictions": future_pred, "saved_id": str(saved_id)}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+# Run the FastAPI app
 if __name__ == "__main__":
     uvicorn.run("fastapi-mongo:app", host="127.0.0.1", port=8000, reload=True)
