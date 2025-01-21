@@ -63,8 +63,8 @@ function setupResizeObserver() {
 // Fonction de mise à jour des prédictions avec les données réelles
 function updatePredictionsData(data, symbol) {
     try {
-        // Charger les prédictions depuis le fichier JSON
-        fetch(`/data/data_predicted/${symbol}_data_predicted.json`)
+        // Charger les prédictions depuis la collection MongoDB prediction_ml via l'API
+        fetch(`/api/predictions/${symbol}`)
             .then(response => response.json())
             .then(predictionData => {
                 // Prix réel
@@ -84,8 +84,8 @@ function updatePredictionsData(data, symbol) {
                 }
 
                 // Prix prédit
-                if (predictionData.data && predictionData.data.length > 0) {
-                    const latestPrediction = predictionData.data[0].prediction;
+                if (predictionData && predictionData.predicted_price) {
+                    const latestPrediction = predictionData.predicted_price;
                     const predictedPrice = document.getElementById('predicted-price');
                     const predictedPricePercentage = document.querySelector('#predicted-price + .percentage');
                     

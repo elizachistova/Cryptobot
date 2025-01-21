@@ -221,41 +221,53 @@ class CryptoAnalyzer:
                 }
                 
             logger.info(f"Requête MongoDB: {query}")
-            
-            # Récupération des données
-            cursor = self.db.market_data.find(
-                query,
-                {
-                    "_id": 0,
-                    "symbol": 1,
-                    "openTime": 1,
-                    "open": 1,
-                    "high": 1,
-                    "low": 1,
-                    "close": 1,
-                    "volume": 1,
-                    "trend": 1,
-                    "volume_price_ratio": 1,
-                    "indicator": 1
-                }
-            ).sort("openTime", 1)
-            
-            documents = list(cursor)
-            logger.info(f"Nombre de documents récupérés: {len(documents)}")
-            
-            if not documents:
-                return pd.DataFrame()
-                
-            # Transformation des documents en DataFrame
-            df = pd.DataFrame(documents)
-            
-            # Extraction des indicateurs
+            query = {"symbol": symbol}
+            projection = {
+            "openTime": 1,
+            "open": 1,
+            "high": 1,
+            "low": 1,
+            "close": 1,
+            "volume": 1,
+            "trend": 1,
+            "volume_price_ratio": 1,
+            "indicator": 1,
+            "_id": 0
+            }
+            cursor = self.db.market_data.find(query,projection).sort("openTime", 1)
+            df = pd.DataFrame(list(cursor))
+
             if 'indicator' in df.columns:
-                indicators = pd.json_normalize(df['indicator'])
-                df = pd.concat([df.drop('indicator', axis=1), indicators], axis=1)
+                indicator_df = pd.json_normalize(df['indicator'])
+                df = pd.concat([df, indicator_df], axis=1)
+                df.drop(columns=['indicator'], inplace=True)
+
+            df = df.rename(columns={
+                "openTime": "openTime",
+                "open": "open",
+                "high": "high",
+                "low": "low",
+                "close": "close",
+                "volume": "volume",
+                "trend": "trend",
+                "volume_price_ratio": "volume_price_ratio",
+                "BB_MA": "BB_MA",
+                "BB_UPPER": "BB_UPPER",
+                "BB_LOWER": "BB_LOWER",
+                "RSI": "RSI",
+                "DOJI": "DOJI",
+                "HAMMER": "HAMMER",
+                "SHOOTING_STAR": "SHOOTING_STAR"
+            })
             
+            #documents = list(cursor)
+            logger.info(f"Nombre de documents récupérés: {len(df)}")
+            
+
             # Conversion des types
             df['openTime'] = pd.to_datetime(df['openTime'])
+          
+           # df['openTime'] = pd.to_datetime(df['openTime'])
             numeric_cols = ['open', 'high', 'low', 'close', 'volume',
                         'trend', 'volume_price_ratio', 'BB_MA', 
                         'BB_UPPER', 'BB_LOWER', 'RSI']

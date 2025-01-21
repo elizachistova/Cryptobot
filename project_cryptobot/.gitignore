@@ -1,8 +1,8 @@
 
 # Virtual environment
-venv/
-/venv/
+#venv/
+#/venv/
 env/
 .venv/
 .env/
-__pycache__/
+**/__pycache__/
