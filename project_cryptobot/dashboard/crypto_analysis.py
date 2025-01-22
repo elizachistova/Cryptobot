@@ -393,7 +393,7 @@ class CryptoAnalyzer:
                 'volume_24h': stats_24h.get('volume_24h', None)
             }
             
-            logger.info(f"Résultats de l'analyse: {results}")
+            logger.info(f"Résultats des 3 dernières analyses: {dict(list(results.items())[-3:])}")
             return results
 
 

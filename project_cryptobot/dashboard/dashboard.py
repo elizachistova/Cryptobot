@@ -19,7 +19,7 @@ load_dotenv(dotenv_path)
 # Configuration MongoDB avec gestion d'erreur
 try:
     MONGODB_URI = (
-        f"mongodb://CryptoBot:bot123@127.0.0.1:27017/Cryptobot?authSource=admin"
+        f"mongodb://CryptoBot:bot123@mongodb:27017/Cryptobot?authSource=admin"
     )
 
     # Initialisation de l'analyseur
@@ -79,30 +79,31 @@ def get_analysis(symbol):
         logger.error(f"Erreur dans get_analysis: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-@app.route('/api/predictions/<symbol>')
+@app.route('/api/predictions/<symbol>', methods=['GET', 'POST'])
 def get_predictions(symbol):
-    """Route pour obtenir les prédictions depuis MongoDB"""
+    """Route pour obtenir les prédictions depuis MongoDB avec pipeline personnalisée"""
     try:
         if not analyzer:
-            raise Exception("Analyseur non initialisé - Problème de connexion MongoDB")
-            
+            raise Exception("Analyseur non initialisé")
+
         pipeline = [
             {"$match": {"symbol": symbol}}, 
-            {"$unwind": "$predictions"},    
-            {"$sort": {"predictions.timestamp": -1}},  
-            {"$limit": 1}  
+            {"$unwind": "$predictions"},
+            {"$sort": {"predictions.timestamp": -1}},
+            {"$limit": 1}
         ]
-        logger.info(f"Pipeline MongoDB pour {symbol}: {pipeline}")
+            
         result = list(analyzer.db.prediction_ml.aggregate(pipeline))
-        logger.info(f"Résultat brut MongoDB pour {symbol}: {result}")
-
+        
         if not result:
             return jsonify({"error": "No prediction available"}), 404
+
         latest_prediction = result[0]["predictions"]
         return jsonify({
             "predicted_price": latest_prediction["prediction"],
             "timestamp": latest_prediction["timestamp"]
         })
+
     except Exception as e:
         logger.error(f"Erreur dans get_predictions: {str(e)}")
         return jsonify({"error": str(e)}), 500
