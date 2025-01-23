@@ -63,20 +63,7 @@ function setupResizeObserver() {
 // Fonction de mise à jour des prédictions avec les données réelles
 function updatePredictionsData(data, symbol) {
     try {
-        fetch(`/api/predictions/${symbol}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                pipeline: [
-                    {"$match": {"symbol": symbol}},
-                    {"$unwind": "$predictions"},
-                    {"$sort": {"predictions.timestamp": -1}},
-                    {"$limit": 1}
-                ]
-            })
-        })
+        fetch(`/api/predictions/${symbol}`)
         .then(response => response.json())
         .then(predictionData => {
             // Prix réel
@@ -86,7 +73,6 @@ function updatePredictionsData(data, symbol) {
             if (realPrice && data.current_price) {
                 realPrice.textContent = `$${formatNumber(data.current_price)}`;
                 
-                // Variation sur 24h pour le prix réel
                 if (data.price_change_percentage_24h !== undefined) {
                     const changePercent = Number(data.price_change_percentage_24h);
                     realPricePercentage.textContent = `(${changePercent >= 0 ? '+' : ''}${formatNumber(changePercent)}%)`;
@@ -95,20 +81,19 @@ function updatePredictionsData(data, symbol) {
                 }
             }
 
-            // Prix prédit
-            if (predictionData && predictionData.predicted_price) {
-                const latestPrediction = predictionData.predicted_price;
+            // Prix prédit 
+            if (predictionData && predictionData.predictions) {
                 const predictedPrice = document.getElementById('predicted-price');
                 const predictedPricePercentage = document.querySelector('#predicted-price + .percentage');
                 
                 if (predictedPrice && data.current_price) {
-                    predictedPrice.textContent = `$${formatNumber(latestPrediction)}`;
+                    predictedPrice.textContent = `$${formatNumber(predictionData.predictions.prediction)}`;
                     
                     // Calcul du PNL
-                    const pnl = latestPrediction - data.current_price;
+                    const pnl = predictionData.predictions.prediction - data.current_price;
                     const pnlPercentage = (pnl / data.current_price) * 100;
                     
-                    predictedPricePercentage.textContent = `PNL ${formatNumber(pnl)} USDT (${formatNumber(pnlPercentage)}%)`;
+                    predictedPricePercentage.textContent = `(${pnl >= 0 ? '+' : ''}${formatNumber(pnlPercentage)}%)`;
                     predictedPricePercentage.classList.remove('positive', 'negative');
                     predictedPricePercentage.classList.add(pnl >= 0 ? 'positive' : 'negative');
                 }
@@ -118,21 +103,18 @@ function updatePredictionsData(data, symbol) {
                 const variationPercentage = document.querySelector('#price-variation + .percentage');
                 
                 if (priceVariation && data.current_price) {
-                    const variation = Math.abs(latestPrediction - data.current_price);
+                    const variation = Math.abs(predictionData.predictions.prediction - data.current_price);
                     const variationPercent = (variation / data.current_price) * 100;
                     
                     priceVariation.textContent = `$${formatNumber(variation)}`;
                     variationPercentage.textContent = `(${formatNumber(variationPercent)}%)`;
-                    variationPercentage.classList.remove('positive', 'negative');
-                    variationPercentage.classList.add(variationPercent >= 0 ? 'positive' : 'negative');
                 }
             }
         })
         .catch(error => {
             console.error("Erreur lors du chargement des prédictions:", error);
-            // En cas d'erreur, on affiche des tirets
             document.getElementById('predicted-price').textContent = '-';
-            document.getElementById('price-variation').textContent = '-';
+            document.getElementById('price-variation').textContent = '-'; 
             document.querySelector('#predicted-price + .percentage').textContent = '-';
             document.querySelector('#price-variation + .percentage').textContent = '-';
         });

@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, request, send_from_directory
 import plotly
 import json
 from datetime import datetime
-from crypto_analysis import CryptoAnalyzer
+from .crypto_analysis import CryptoAnalyzer
 import logging
 import os
 from dotenv import load_dotenv
@@ -81,28 +81,19 @@ def get_analysis(symbol):
 
 @app.route('/api/predictions/<symbol>', methods=['GET', 'POST'])
 def get_predictions(symbol):
-    """Route pour obtenir les prédictions depuis MongoDB avec pipeline personnalisée"""
     try:
         if not analyzer:
             raise Exception("Analyseur non initialisé")
-
-        pipeline = [
-            {"$match": {"symbol": symbol}}, 
-            {"$unwind": "$predictions"},
-            {"$sort": {"predictions.timestamp": -1}},
-            {"$limit": 1}
-        ]
             
-        result = list(analyzer.db.prediction_ml.aggregate(pipeline))
+        result = analyzer.db.prediction_ml.find_one(
+            {"symbol": symbol},
+            {"predictions": 1, "_id": 0}
+        )
         
         if not result:
             return jsonify({"error": "No prediction available"}), 404
 
-        latest_prediction = result[0]["predictions"]
-        return jsonify({
-            "predicted_price": latest_prediction["prediction"],
-            "timestamp": latest_prediction["timestamp"]
-        })
+        return jsonify(result)
 
     except Exception as e:
         logger.error(f"Erreur dans get_predictions: {str(e)}")
