@@ -1,45 +1,36 @@
-db=connect("mongodb://CryptoBot:bot123@localhost/Cryptobot");
+print("Début de l'initialisation MongoDB");
+
+db = db.getSiblingDB("Cryptobot");
+
+if (!db.getUser("CryptoBot")) {
+    db.createUser({
+        user: "CryptoBot",
+        pwd: "bot123", 
+        roles: [{ role: "readWrite", db: "Cryptobot" }]
+    });
+    print("Utilisateur 'CryptoBot' créé avec succès.");
+} else {
+    print("L'utilisateur 'CryptoBot' existe déjà.");
+}
 
 db.market_data.insertMany([
     {
         symbol: 'BTCUSDT',
-        last_updated: ISODate('2025-01-13T01:25:00.000Z'),
-        rows: 16201,
-        openTime: ISODate('2025-01-06T20:00:00.000Z'),
-        open: 101817.22,
-        high: 102329.98,
-        low: 101600.05,
-        close: 102235.6,
-        volume: 3269.77,
+        last_updated: ISODate('2025-01-20T15:49:31.375Z'),
+        rows: 16246,
+        openTime: ISODate('2025-01-17T08:00:00.000Z'),
+        open: 101440.51,
+        high: 102581.45,
+        low: 101439.77,
+        close: 102237.6,
+        volume: 5380.48,
         trend: 1,
-        volume_price_ratio: 0.032,
+        volume_price_ratio: 0.0526,
         indicator: {
-          BB_MA: 96224.74,
-          BB_UPPER: 102709.9,
-          BB_LOWER: 89739.58,
-          RSI: 86.43,
-          DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'BTCUSDT',
-        last_updated: ISODate('2025-01-13T01:25:00.000Z'),
-        rows: 16201,
-        openTime: ISODate('2025-01-06T16:00:00.000Z'),
-        open: 102147.95,
-        high: 102480,
-        low: 101250,
-        close: 101817.22,
-        volume: 5128.13,
-        trend: -1,
-        volume_price_ratio: 0.0504,
-        indicator: {
-          BB_MA: 96652.93,
-          BB_UPPER: 103444.52,
-          BB_LOWER: 89861.34,
-          RSI: 82.5,
+          BB_MA: 104412.67,
+          BB_UPPER: 107717.46,
+          BB_LOWER: 101107.88,
+          RSI: 33.45,
           DOJI: 0,
           HAMMER: 0,
           SHOOTING_STAR: 0
@@ -47,268 +38,196 @@ db.market_data.insertMany([
       },
       {
         symbol: 'ETHUSDT',
-        last_updated: ISODate('2025-01-13T01:25:01.000Z'),
-        rows: 16201,
-        openTime: ISODate('2025-01-07T00:00:00.000Z'),
-        open: 3687.44,
-        high: 3700.86,
-        low: 3663,
-        close: 3682.25,
-        volume: 27692.08,
-        trend: -1,
-        volume_price_ratio: 7.5204,
-        indicator: {
-          BB_MA: 3375.62,
-          BB_UPPER: 3660.18,
-          BB_LOWER: 3091.06,
-          RSI: 88.13,
-          DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'ETHUSDT',
-        last_updated: ISODate('2025-01-13T01:25:01.000Z'),
-        rows: 16201,
-        openTime: ISODate('2025-01-06T20:00:00.000Z'),
-        open: 3687.44,
-        high: 3703.38,
-        low: 3666.37,
-        close: 3687.45,
-        volume: 29594.63,
+        last_updated: ISODate('2025-01-20T15:50:07.168Z'),
+        rows: 16246,
+        openTime: ISODate('2025-01-17T08:00:00.000Z'),
+        open: 3373.14,
+        high: 3439,
+        low: 3372.52,
+        close: 3423.24,
+        volume: 70486.33,
         trend: 1,
-        volume_price_ratio: 8.0258,
+        volume_price_ratio: 20.5905,
         indicator: {
-          BB_MA: 3395.7,
-          BB_UPPER: 3708.36,
-          BB_LOWER: 3083.04,
-          RSI: 90.53,
-          DOJI: 1,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'ETHUSDT',
-        last_updated: ISODate('2025-01-13T01:25:01.000Z'),
-        rows: 16201,
-        openTime: ISODate('2025-01-06T16:00:00.000Z'),
-        open: 3714.45,
-        high: 3744.83,
-        low: 3655.55,
-        close: 3687.44,
-        volume: 72164.67,
-        trend: -1,
-        volume_price_ratio: 19.5704,
-        indicator: {
-          BB_MA: 3418.36,
-          BB_UPPER: 3749.51,
-          BB_LOWER: 3087.21,
-          RSI: 89.77,
+          BB_MA: 3338.26,
+          BB_UPPER: 3486.04,
+          BB_LOWER: 3190.48,
+          RSI: 50.28,
           DOJI: 0,
           HAMMER: 0,
           SHOOTING_STAR: 0
         }
       },
       {
-        symbol: 'BNBUSDT',
-        last_updated: ISODate('2025-01-13T01:24:59.000Z'),
-        rows: 15716,
-        openTime: ISODate('2025-01-07T00:00:00.000Z'),
-        open: 729.42,
-        high: 731.6,
-        low: 725.18,
-        close: 728.92,
-        volume: 43601.51,
-        trend: -1,
-        volume_price_ratio: 59.8166,
-        indicator: {
-          BB_MA: 699.47,
-          BB_UPPER: 727.5,
-          BB_LOWER: 671.44,
-          RSI: 70.98,
-          DOJI: 1,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'BNBUSDT',
-        last_updated: ISODate('2025-01-13T01:24:59.000Z'),
-        rows: 15716,
-        openTime: ISODate('2025-01-06T20:00:00.000Z'),
-        open: 732.3,
-        high: 745.29,
-        low: 728.5,
-        close: 729.42,
-        volume: 96960.3,
-        trend: -1,
-        volume_price_ratio: 132.9279,
-        indicator: {
-          BB_MA: 701.52,
-          BB_UPPER: 733.41,
-          BB_LOWER: 669.63,
-          RSI: 82.33,
-          DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 1
-        }
-      },
-      {
-        symbol: 'BNBUSDT',
-        last_updated: ISODate('2025-01-13T01:24:59.000Z'),
-        rows: 15716,
-        openTime: ISODate('2025-01-06T16:00:00.000Z'),
-        open: 725.76,
-        high: 735.65,
-        low: 721.95,
-        close: 732.3,
-        volume: 77453.01,
+        symbol: 'SOLUSDT',
+        last_updated: ISODate('2025-01-20T15:50:30.718Z'),
+        rows: 9722,
+        openTime: ISODate('2025-01-17T08:00:00.000Z'),
+        open: 213.27,
+        high: 219.7,
+        low: 213.22,
+        close: 218.77,
+        volume: 841428.75,
         trend: 1,
-        volume_price_ratio: 105.7668,
+        volume_price_ratio: 3846.1798,
         indicator: {
-          BB_MA: 703.67,
-          BB_UPPER: 737.18,
-          BB_LOWER: 670.16,
-          RSI: 81.45,
+          BB_MA: 247.73,
+          BB_UPPER: 289,
+          BB_LOWER: 206.46,
+          RSI: 25.84,
           DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'AVAXUSDT',
-        last_updated: ISODate('2025-01-13T01:25:00.000Z'),
-        rows: 9425,
-        openTime: ISODate('2025-01-06T20:00:00.000Z'),
-        open: 44.31,
-        high: 44.44,
-        low: 43.71,
-        close: 44.05,
-        volume: 284580.46,
-        trend: -1,
-        volume_price_ratio: 6460.3964,
-        indicator: {
-          BB_MA: 39.09,
-          BB_UPPER: 44.68,
-          BB_LOWER: 33.5,
-          RSI: 96.86,
-          DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'AVAXUSDT',
-        last_updated: ISODate('2025-01-13T01:25:00.000Z'),
-        rows: 9425,
-        openTime: ISODate('2025-01-06T16:00:00.000Z'),
-        open: 44.75,
-        high: 45.05,
-        low: 43.63,
-        close: 44.32,
-        volume: 433380.95,
-        trend: -1,
-        volume_price_ratio: 9778.451,
-        indicator: {
-          BB_MA: 39.47,
-          BB_UPPER: 45.4,
-          BB_LOWER: 33.54,
-          RSI: 96.65,
-          DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'XRPUSDT',
-        last_updated: ISODate('2025-01-13T01:24:57.000Z'),
-        rows: 14131,
-        openTime: ISODate('2025-01-06T16:00:00.000Z'),
-        open: 2.44,
-        high: 2.46,
-        low: 2.4,
-        close: 2.42,
-        volume: 41007513,
-        trend: -1,
-        volume_price_ratio: 16945253.3058,
-        indicator: {
-          BB_MA: 2.34,
-          BB_UPPER: 2.45,
-          BB_LOWER: 2.23,
-          RSI: 58.14,
-          DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'ADAUSDT',
-        last_updated: ISODate('2025-01-13T01:24:58.000Z'),
-        rows: 12066,
-        openTime: ISODate('2025-01-06T20:00:00.000Z'),
-        open: 1.11,
-        high: 1.11,
-        low: 1.09,
-        close: 1.09,
-        volume: 15643397.7,
-        trend: -1,
-        volume_price_ratio: 14351741.0092,
-        indicator: {
-          BB_MA: 0.99,
-          BB_UPPER: 1.14,
-          BB_LOWER: 0.84,
-          RSI: 75,
-          DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'ADAUSDT',
-        last_updated: ISODate('2025-01-13T01:24:58.000Z'),
-        rows: 12066,
-        openTime: ISODate('2025-01-06T16:00:00.000Z'),
-        open: 1.1,
-        high: 1.12,
-        low: 1.09,
-        close: 1.11,
-        volume: 40411345.4,
-        trend: 1,
-        volume_price_ratio: 36406617.4775,
-        indicator: {
-          BB_MA: 1,
-          BB_UPPER: 1.15,
-          BB_LOWER: 0.85,
-          RSI: 74.29,
-          DOJI: 0,
-          HAMMER: 0,
-          SHOOTING_STAR: 0
-        }
-      },
-      {
-        symbol: 'TRXUSDT',
-        last_updated: ISODate('2025-01-13T01:24:57.000Z'),
-        rows: 5330,
-        openTime: ISODate('2025-01-06T08:00:00.000Z'),
-        open: 0.26,
-        high: 0.26,
-        low: 0.26,
-        close: 0.26,
-        volume: 62700204.4,
-        trend: -1,
-        volume_price_ratio: 241154632.3077,
-        indicator: {
-          BB_MA: 0.26,
-          BB_UPPER: 0.28,
-          BB_LOWER: 0.24,
-          RSI: 66.67,
-          DOJI: 1,
           HAMMER: 0,
           SHOOTING_STAR: 0
         }
       }
-        
+      
+]);
 
-]);    
+db.prediction_ml.insertMany([
+    {
+        symbol: 'BTCUSDT',
+        predictions: [
+          {
+            timestamp: ISODate('2025-01-17T12:00:00.000Z'),
+            prediction: 91697.31
+          },
+          {
+            timestamp: ISODate('2025-01-17T16:00:00.000Z'),
+            prediction: 91542.41
+          },
+          {
+            timestamp: ISODate('2025-01-17T20:00:00.000Z'),
+            prediction: 91395.25
+          },
+          {
+            timestamp: ISODate('2025-01-18T00:00:00.000Z'),
+            prediction: 91040.82
+          },
+          {
+            timestamp: ISODate('2025-01-18T04:00:00.000Z'),
+            prediction: 91095.34
+          },
+          {
+            timestamp: ISODate('2025-01-18T08:00:00.000Z'),
+            prediction: 91420.84
+          },
+          {
+            timestamp: ISODate('2025-01-18T12:00:00.000Z'),
+            prediction: 91479.09
+          },
+          {
+            timestamp: ISODate('2025-01-18T16:00:00.000Z'),
+            prediction: 92055.69
+          },
+          {
+            timestamp: ISODate('2025-01-18T20:00:00.000Z'),
+            prediction: 92467.45
+          },
+          {
+            timestamp: ISODate('2025-01-19T00:00:00.000Z'),
+            prediction: 92779.18
+          }
+        ],
+        metadata: { created_at: ISODate('2025-01-23T13:57:32.828Z') }
+      },
+      {
+        symbol: 'ETHUSDT',
+        predictions: [
+          {
+            timestamp: ISODate('2025-01-17T12:00:00.000Z'),
+            prediction: 3512.46
+          },
+          {
+            timestamp: ISODate('2025-01-17T16:00:00.000Z'),
+            prediction: 3472.26
+          },
+          {
+            timestamp: ISODate('2025-01-17T20:00:00.000Z'),
+            prediction: 3435.84
+          },
+          {
+            timestamp: ISODate('2025-01-18T00:00:00.000Z'),
+            prediction: 3405.73
+          },
+          {
+            timestamp: ISODate('2025-01-18T04:00:00.000Z'),
+            prediction: 3380.4
+          },
+          {
+            timestamp: ISODate('2025-01-18T08:00:00.000Z'),
+            prediction: 3407.27
+          },
+          {
+            timestamp: ISODate('2025-01-18T12:00:00.000Z'),
+            prediction: 3368.02
+          },
+          {
+            timestamp: ISODate('2025-01-18T16:00:00.000Z'),
+            prediction: 3399.42
+          },
+          {
+            timestamp: ISODate('2025-01-18T20:00:00.000Z'),
+            prediction: 3433.77
+          },
+          {
+            timestamp: ISODate('2025-01-19T00:00:00.000Z'),
+            prediction: 3457.11
+          }
+        ],
+        metadata: { created_at: ISODate('2025-01-23T13:59:18.801Z') }
+      },
+      {
+        symbol: 'SOLUSDT',
+        predictions: [
+          {
+            timestamp: ISODate('2025-01-17T12:00:00.000Z'),
+            prediction: 206.38
+          },
+          {
+            timestamp: ISODate('2025-01-17T16:00:00.000Z'),
+            prediction: 202.07
+          },
+          {
+            timestamp: ISODate('2025-01-17T20:00:00.000Z'),
+            prediction: 204.88
+          },
+          {
+            timestamp: ISODate('2025-01-18T00:00:00.000Z'),
+            prediction: 209.08
+          },
+          {
+            timestamp: ISODate('2025-01-18T04:00:00.000Z'),
+            prediction: 211.94
+          },
+          {
+            timestamp: ISODate('2025-01-18T08:00:00.000Z'),
+            prediction: 214.53
+          },
+          {
+            timestamp: ISODate('2025-01-18T12:00:00.000Z'),
+            prediction: 209.81
+          },
+          {
+            timestamp: ISODate('2025-01-18T16:00:00.000Z'),
+            prediction: 208.87
+          },
+          {
+            timestamp: ISODate('2025-01-18T20:00:00.000Z'),
+            prediction: 214.35
+          },
+          {
+            timestamp: ISODate('2025-01-19T00:00:00.000Z'),
+            prediction: 218.11
+          }
+        ],
+        metadata: { created_at: ISODate('2025-01-23T14:01:55.506Z') }
+      }
+      
+      
+]);
+console.log("Data inserted successfully for prediction_ml");
+db.prediction_ml.find().pretty();
+
+console.log("Data inserted successfully for market_data and prediction_ml");
+db.market_data.find().pretty();
+print("Fin de l'initialisation MongoDB");
