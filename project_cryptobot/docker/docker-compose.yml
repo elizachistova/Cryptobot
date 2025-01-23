@@ -64,17 +64,16 @@ services:
   mongodb:
     image: mongo:latest
     container_name: mongodb_cryptobot
+    restart: always
     environment:
-      - MONGO_INITDB_DATABASE=Cryptobot  
-      - MONGO_INITDB_ROOT_USERNAME=CryptoBot  
-      - MONGO_INITDB_ROOT_PASSWORD=bot123 
+      MONGO_INITDB_DATABASE: Cryptobot  
+      MONGO_INITDB_ROOT_USERNAME: CryptoBot  
+      MONGO_INITDB_ROOT_PASSWORD: bot123 
     ports:
       - "27017:27017"
     volumes:
-      - ../src/initdb.d:/docker-entrypoint-initdb.d 
-      - mongodb_data:/data/db 
-    command: mongod --auth
-    restart: unless-stopped
+      - ../src/initdb.d:/docker-entrypoint-initdb.d  
+  
 
   prometheus:
     image: prom/prometheus
@@ -299,9 +298,9 @@ services:
         mongodb:
           condition: service_healthy
       environment:
-        - MONGO_INITDB_DATABASE=Cryptobot  
-        - MONGO_INITDB_ROOT_USERNAME=CryptoBot  
-        - MONGO_INITDB_ROOT_PASSWORD=bot123         
+        MONGO_INITDB_DATABASE: Cryptobot  
+        MONGO_INITDB_ROOT_USERNAME: CryptoBot  
+        MONGO_INITDB_ROOT_PASSWORD: bot123         
         - PYTHONPATH=/app
         - FLASK_APP=dashboard.py
         - FLASK_ENV=development
