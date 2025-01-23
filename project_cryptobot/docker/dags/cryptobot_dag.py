@@ -5,9 +5,7 @@ from datetime import datetime
 import subprocess
 
 def installs():
-    subprocess.run(["pip", "install", "pymongo"])
-    subprocess.run(["pip", "install", "joblib"])
-    subprocess.run(["pip", "install", "scikit-learn"])
+    subprocess.run(["pip", "install", "prometheus-fastapi-instrumentator"])
 
 with DAG(
     'cryptobot_workflow',
@@ -22,10 +20,10 @@ with DAG(
     tags=['cryptobot'],
 ) as dag:
     
-    #install_task = PythonOperator(
-    #    task_id="installs",
-    #    python_callable=installs,
-    #)
+    install_task = PythonOperator(
+        task_id="installs",
+        python_callable=installs,
+    )
 
     # Task 1: Data Collection
     fetch_data = BashOperator(
@@ -64,4 +62,4 @@ with DAG(
     )
 
     # Define task dependencies
-    fetch_data >> preprocess_data >> load_data >> model_prediction >> fastapi 
+    install_task >> fetch_data >> preprocess_data >> load_data >> model_prediction >> fastapi >> dashboard_update
