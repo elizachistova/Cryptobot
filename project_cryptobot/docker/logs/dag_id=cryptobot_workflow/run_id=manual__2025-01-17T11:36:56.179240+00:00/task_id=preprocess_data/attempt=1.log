@@ -1,0 +1,106 @@
+[2025-01-17T11:37:42.671+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-01-17T11:37:42.721+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cryptobot_workflow.preprocess_data manual__2025-01-17T11:36:56.179240+00:00 [queued]>
+[2025-01-17T11:37:42.733+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cryptobot_workflow.preprocess_data manual__2025-01-17T11:36:56.179240+00:00 [queued]>
+[2025-01-17T11:37:42.733+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2025-01-17T11:37:42.744+0000] {taskinstance.py:2889} INFO - Executing <Task(BashOperator): preprocess_data> on 2025-01-17 11:36:56.179240+00:00
+[2025-01-17T11:37:42.754+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=114) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-01-17T11:37:42.756+0000] {standard_task_runner.py:72} INFO - Started process 115 to run task
+[2025-01-17T11:37:42.756+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'cryptobot_workflow', 'preprocess_data', 'manual__2025-01-17T11:36:56.179240+00:00', '--job-id', '17', '--raw', '--subdir', 'DAGS_FOLDER/cryptobot_dag.py', '--cfg-path', '/tmp/tmp_bkzlpp_']
+[2025-01-17T11:37:42.759+0000] {standard_task_runner.py:105} INFO - Job 17: Subtask preprocess_data
+[2025-01-17T11:37:43.033+0000] {task_command.py:467} INFO - Running <TaskInstance: cryptobot_workflow.preprocess_data manual__2025-01-17T11:36:56.179240+00:00 [running]> on host e59d1a272e2b
+[2025-01-17T11:37:43.073+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cryptobot_workflow' AIRFLOW_CTX_TASK_ID='preprocess_data' AIRFLOW_CTX_EXECUTION_DATE='2025-01-17T11:36:56.179240+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-01-17T11:36:56.179240+00:00'
+[2025-01-17T11:37:43.074+0000] {logging_mixin.py:190} INFO - Task instance is in running state
+[2025-01-17T11:37:43.074+0000] {logging_mixin.py:190} INFO -  Previous state of the Task instance: queued
+[2025-01-17T11:37:43.074+0000] {logging_mixin.py:190} INFO - Current task name:preprocess_data state:running start_date:2025-01-17 11:37:42.723540+00:00
+[2025-01-17T11:37:43.074+0000] {logging_mixin.py:190} INFO - Dag name:cryptobot_workflow and current dag run status:running
+[2025-01-17T11:37:43.074+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-01-17T11:37:43.075+0000] {subprocess.py:78} INFO - Tmp dir root location: /tmp
+[2025-01-17T11:37:43.075+0000] {subprocess.py:88} INFO - Running command: ['/usr/bin/bash', '-c', 'python /opt/***/src/Data_processor.py']
+[2025-01-17T11:37:43.082+0000] {subprocess.py:99} INFO - Output:
+[2025-01-17T11:37:43.769+0000] {subprocess.py:106} INFO - Traceback (most recent call last):
+[2025-01-17T11:37:43.784+0000] {subprocess.py:106} INFO -   File "/opt/***/src/Data_processor.py", line 168, in <module>
+[2025-01-17T11:37:43.787+0000] {subprocess.py:106} INFO -     main()
+[2025-01-17T11:37:43.788+0000] {subprocess.py:106} INFO -   File "/opt/***/src/Data_processor.py", line 158, in main
+[2025-01-17T11:37:43.789+0000] {subprocess.py:106} INFO -     dataframes = loader.load_klines_data()
+[2025-01-17T11:37:43.792+0000] {subprocess.py:106} INFO -                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+[2025-01-17T11:37:43.792+0000] {subprocess.py:106} INFO -   File "/opt/***/src/Data_processor.py", line 19, in load_klines_data
+[2025-01-17T11:37:43.795+0000] {subprocess.py:106} INFO -     raise FileNotFoundError(f"Directory {self.data_dir} does not exist")
+[2025-01-17T11:37:43.796+0000] {subprocess.py:106} INFO - FileNotFoundError: Directory /opt/***/src/../data/data_raw does not exist
+[2025-01-17T11:37:43.828+0000] {subprocess.py:110} INFO - Command exited with return code 1
+[2025-01-17T11:37:43.842+0000] {taskinstance.py:3311} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 422, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 276, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2025-01-17T11:37:43.847+0000] {logging_mixin.py:190} INFO - Task instance in failure state
+[2025-01-17T11:37:43.847+0000] {logging_mixin.py:190} INFO - Task start:2025-01-17 11:37:42.723540+00:00 end:2025-01-17 11:37:43.846491+00:00 duration:1.122951
+[2025-01-17T11:37:43.847+0000] {logging_mixin.py:190} INFO - Task:<Task(BashOperator): preprocess_data> dag:<DAG: cryptobot_workflow> dagrun:<DagRun cryptobot_workflow @ 2025-01-17 11:36:56.179240+00:00: manual__2025-01-17T11:36:56.179240+00:00, state:running, queued_at: 2025-01-17 11:36:56.221348+00:00. externally triggered: True>
+[2025-01-17T11:37:43.847+0000] {logging_mixin.py:190} INFO - Failure caused by Bash command failed. The command returned a non-zero exit code 1.
+[2025-01-17T11:37:43.847+0000] {taskinstance.py:1225} INFO - Marking task as FAILED. dag_id=cryptobot_workflow, task_id=preprocess_data, run_id=manual__2025-01-17T11:36:56.179240+00:00, execution_date=20250117T113656, start_date=20250117T113742, end_date=20250117T113743
+[2025-01-17T11:37:43.859+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-01-17T11:37:43.859+0000] {standard_task_runner.py:124} ERROR - Failed to execute job 17 for task preprocess_data (Bash command failed. The command returned a non-zero exit code 1.; 115)
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py", line 117, in _start_by_fork
+    ret = args.func(args, dag=self.dag)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/cli_config.py", line 49, in command
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/cli.py", line 116, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 483, in task_run
+    task_return_code = _run_task_by_selected_method(args, _dag, ti)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 256, in _run_task_by_selected_method
+    return _run_raw_task(args, ti)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/cli/commands/task_command.py", line 341, in _run_raw_task
+    return ti._run_raw_task(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/session.py", line 97, in wrapper
+    return func(*args, session=session, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3005, in _run_raw_task
+    return _run_raw_task(
+           ^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 273, in _run_raw_task
+    TaskInstance._execute_task_with_callbacks(
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3159, in _execute_task_with_callbacks
+    result = self._execute_task(context, task_orig)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 3183, in _execute_task
+    return _execute_task(self, context, task_orig)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 767, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 733, in _execute_callable
+    return ExecutionCallableRunner(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/utils/operator_helpers.py", line 252, in run
+    return self.func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 422, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 276, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2025-01-17T11:37:43.874+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 1
+[2025-01-17T11:37:44.322+0000] {taskinstance.py:3895} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2025-01-17T11:37:44.326+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

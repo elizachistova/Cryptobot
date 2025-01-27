@@ -1,0 +1,47 @@
+{
+    "metadata": {
+        "symbol": "BNBUSDT"
+    },
+    "data": [
+        {
+            "timestamp": "2024-11-19 16:00:00",
+            "prediction": 603.41
+        },
+        {
+            "timestamp": "2024-11-19 20:00:00",
+            "prediction": 598.48
+        },
+        {
+            "timestamp": "2024-11-20 00:00:00",
+            "prediction": 596.02
+        },
+        {
+            "timestamp": "2024-11-20 04:00:00",
+            "prediction": 600.57
+        },
+        {
+            "timestamp": "2024-11-20 08:00:00",
+            "prediction": 595.88
+        },
+        {
+            "timestamp": "2024-11-20 12:00:00",
+            "prediction": 599.96
+        },
+        {
+            "timestamp": "2024-11-20 16:00:00",
+            "prediction": 590.12
+        },
+        {
+            "timestamp": "2024-11-20 20:00:00",
+            "prediction": 590.02
+        },
+        {
+            "timestamp": "2024-11-21 00:00:00",
+            "prediction": 599.19
+        },
+        {
+            "timestamp": "2024-11-21 04:00:00",
+            "prediction": 589.96
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+FROM python:3.10-slim
+FROM apache/airflow:2.10.4
+
+USER root
+
+RUN apt-get update --allow-releaseinfo-change && apt-get install -y \
+    build-essential \
+    make \
+    libfreetype6-dev \
+    libxft-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libblas-dev \
+    liblapack-dev \
+    gfortran \
+    libharfbuzz-dev \
+    zlib1g-dev \
+    libhdf5-dev \
+    libbz2-dev \
+    && apt-get clean
+
+# Upgrade pip, setuptools, and wheel
+USER airflow
+RUN pip install --upgrade pip setuptools wheel
+
+COPY docker/requirements.txt /
+COPY config/config.json /opt/airflow/config/config.json
+
+RUN pip install --no-cache-dir "apache-airflow==${AIRFLOW_VERSION}" -v -r /requirements.txt

@@ -1,0 +1,45 @@
+{
+    "symbols": [
+        "BTCUSDT", 
+        "ETHUSDT", 
+        "SOLUSDT", 
+        "BNBUSDT", 
+        "XRPUSDT",
+        "DOGEUSDT", 
+        "ADAUSDT", 
+        "TRXUSDT", 
+        "AVAXUSDT", 
+        "TONUSDT"
+    ],
+
+    "interval": "4h",
+    "limit": 1000,
+    "columns_klines": [
+        "openTime",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "closeTime",
+        "quoteVolume",
+        "numTrades",
+        "takerBuyBaseVolume",
+        "takerBuyQuoteVolume",
+        "ignore"
+    ],
+    "columns_trades": [
+        "id",
+        "price",
+        "qty",
+        "quoteQty",
+        "time",
+        "isBuyerMaker",
+        "isBestMatch"
+    ],
+    "api_endpoints": {
+        "binance_klines": "https://api1.binance.com/api/v3/klines",
+        "binance_ticker": "https://testnet.binance.vision/api/v3/ticker/24hr",
+        "binance_trades": "https://testnet.binance.vision/api/v3/trades"
+    }
+}

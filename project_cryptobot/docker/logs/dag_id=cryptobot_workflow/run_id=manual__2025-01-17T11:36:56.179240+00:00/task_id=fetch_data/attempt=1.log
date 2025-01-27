@@ -1,0 +1,51 @@
+[2025-01-17T11:37:04.020+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-01-17T11:37:04.039+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cryptobot_workflow.fetch_data manual__2025-01-17T11:36:56.179240+00:00 [queued]>
+[2025-01-17T11:37:04.066+0000] {taskinstance.py:2613} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cryptobot_workflow.fetch_data manual__2025-01-17T11:36:56.179240+00:00 [queued]>
+[2025-01-17T11:37:04.066+0000] {taskinstance.py:2866} INFO - Starting attempt 1 of 1
+[2025-01-17T11:37:04.261+0000] {taskinstance.py:2889} INFO - Executing <Task(BashOperator): fetch_data> on 2025-01-17 11:36:56.179240+00:00
+[2025-01-17T11:37:04.278+0000] {warnings.py:112} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70: DeprecationWarning: This process (pid=96) is multi-threaded, use of fork() may lead to deadlocks in the child.
+  pid = os.fork()
+
+[2025-01-17T11:37:04.280+0000] {standard_task_runner.py:72} INFO - Started process 97 to run task
+[2025-01-17T11:37:04.281+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'cryptobot_workflow', 'fetch_data', 'manual__2025-01-17T11:36:56.179240+00:00', '--job-id', '16', '--raw', '--subdir', 'DAGS_FOLDER/cryptobot_dag.py', '--cfg-path', '/tmp/tmpbbhcb527']
+[2025-01-17T11:37:04.283+0000] {standard_task_runner.py:105} INFO - Job 16: Subtask fetch_data
+[2025-01-17T11:37:04.329+0000] {task_command.py:467} INFO - Running <TaskInstance: cryptobot_workflow.fetch_data manual__2025-01-17T11:36:56.179240+00:00 [running]> on host e59d1a272e2b
+[2025-01-17T11:37:04.376+0000] {taskinstance.py:3132} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cryptobot_workflow' AIRFLOW_CTX_TASK_ID='fetch_data' AIRFLOW_CTX_EXECUTION_DATE='2025-01-17T11:36:56.179240+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-01-17T11:36:56.179240+00:00'
+[2025-01-17T11:37:04.377+0000] {logging_mixin.py:190} INFO - Task instance is in running state
+[2025-01-17T11:37:04.377+0000] {logging_mixin.py:190} INFO -  Previous state of the Task instance: queued
+[2025-01-17T11:37:04.378+0000] {logging_mixin.py:190} INFO - Current task name:fetch_data state:running start_date:2025-01-17 11:37:04.040058+00:00
+[2025-01-17T11:37:04.378+0000] {logging_mixin.py:190} INFO - Dag name:cryptobot_workflow and current dag run status:running
+[2025-01-17T11:37:04.378+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-01-17T11:37:04.379+0000] {subprocess.py:78} INFO - Tmp dir root location: /tmp
+[2025-01-17T11:37:04.380+0000] {subprocess.py:88} INFO - Running command: ['/usr/bin/bash', '-c', 'python /opt/***/src/extract.py']
+[2025-01-17T11:37:04.388+0000] {subprocess.py:99} INFO - Output:
+[2025-01-17T11:37:39.924+0000] {subprocess.py:106} INFO - Fetching from the earliest available data.
+[2025-01-17T11:37:39.933+0000] {subprocess.py:106} INFO - Fetched 1000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.937+0000] {subprocess.py:106} INFO - Fetched 2000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.938+0000] {subprocess.py:106} INFO - Fetched 3000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.940+0000] {subprocess.py:106} INFO - Fetched 4000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.941+0000] {subprocess.py:106} INFO - Fetched 5000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.942+0000] {subprocess.py:106} INFO - Fetched 6000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.944+0000] {subprocess.py:106} INFO - Fetched 7000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.945+0000] {subprocess.py:106} INFO - Fetched 8000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.946+0000] {subprocess.py:106} INFO - Fetched 9000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.947+0000] {subprocess.py:106} INFO - Fetched 10000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.948+0000] {subprocess.py:106} INFO - Fetched 11000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.949+0000] {subprocess.py:106} INFO - Fetched 12000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.950+0000] {subprocess.py:106} INFO - Fetched 13000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.950+0000] {subprocess.py:106} INFO - Fetched 14000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.951+0000] {subprocess.py:106} INFO - Fetched 15000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.951+0000] {subprocess.py:106} INFO - Fetched 16000 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.953+0000] {subprocess.py:106} INFO - Fetched 16246 rows for BTCUSDT from earliest available to 2025-01-17
+[2025-01-17T11:37:39.953+0000] {subprocess.py:106} INFO - No more data returned, breaking the loop.
+[2025-01-17T11:37:39.954+0000] {subprocess.py:106} INFO - Error occuring: [Errno 2] No such file or directory: '/opt/***/src/../data/data_raw/BTCUSDT_data_klines.json'
+[2025-01-17T11:37:39.982+0000] {subprocess.py:110} INFO - Command exited with return code 0
+[2025-01-17T11:37:40.024+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-01-17T11:37:40.025+0000] {taskinstance.py:352} INFO - Marking task as SUCCESS. dag_id=cryptobot_workflow, task_id=fetch_data, run_id=manual__2025-01-17T11:36:56.179240+00:00, execution_date=20250117T113656, start_date=20250117T113704, end_date=20250117T113740
+[2025-01-17T11:37:40.037+0000] {logging_mixin.py:190} INFO - Task instance in success state
+[2025-01-17T11:37:40.037+0000] {logging_mixin.py:190} INFO -  Previous state of the Task instance: running
+[2025-01-17T11:37:40.038+0000] {logging_mixin.py:190} INFO - Dag name:cryptobot_workflow queued_at:2025-01-17 11:36:56.221348+00:00
+[2025-01-17T11:37:40.038+0000] {logging_mixin.py:190} INFO - Task hostname:e59d1a272e2b operator:BashOperator
+[2025-01-17T11:37:40.069+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-01-17T11:37:40.087+0000] {taskinstance.py:3895} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-01-17T11:37:40.088+0000] {local_task_job_runner.py:245} INFO - ::endgroup::
